@@ -1,4 +1,4 @@
-import type { User } from '@/types/user'
+import type { UserProfile as User } from '@/types/user'
 
 export interface Chat {
   id: string
@@ -6,7 +6,7 @@ export interface Chat {
   isGroup: boolean
   lastMessage: string
   timestamp: string
-  avatar: string
+  profilePictureUrl: string
   unread: number
   participants: User[]
 }

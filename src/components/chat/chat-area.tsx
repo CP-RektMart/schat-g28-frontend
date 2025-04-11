@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { Chat } from '@/types/chat'
 import type { Message } from '@/types/message'
 //TODO: change type config
-import type { User } from '@/types/user'
+import type { UserProfile as User } from '@/types/user'
 import { Edit, Menu, MoreVertical, Send, Trash2 } from 'lucide-react'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -20,6 +20,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
+
+import { ChatSettings } from './chat-settings'
 
 //
 
@@ -130,7 +132,7 @@ export default function ChatArea({
             <Menu className='h-5 w-5' />
           </Button>
           <Avatar>
-            <AvatarImage src={chat.avatar} alt={chat.name} />
+            <AvatarImage src={chat.profilePictureUrl} alt={chat.name} />
             <AvatarFallback>{chat.name.charAt(0)}</AvatarFallback>
           </Avatar>
           <div>
@@ -149,6 +151,7 @@ export default function ChatArea({
             </p>
           </div>
         </div>
+        {chat.isGroup && <ChatSettings chat={chat} />}
       </div>
 
       {/* Messages area */}

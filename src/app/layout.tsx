@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { IBM_Plex_Sans_Thai, Poppins } from 'next/font/google'
 
+import { Toaster } from '@/components/ui/sonner'
+
 import './globals.css'
 
 const poppins = Poppins({
@@ -35,7 +37,10 @@ export default function RootLayout({
         <title>PicMePls</title>
         <link rel='icon' href='/images/logo.svg' />
       </head>
-      <body className='font-sans antialiased'>{children}</body>
+      <body className='font-sans antialiased'>
+        <main>{children}</main>
+        <Toaster />
+      </body>
     </html>
   )
 }

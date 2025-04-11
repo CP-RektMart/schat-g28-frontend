@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 
+import { initialChats } from '@/mock/initial-chat'
 import type { Chat } from '@/types/chat'
 import type { Message } from '@/types/message'
 //TODO: change type config
@@ -9,113 +10,16 @@ import type { User } from '@/types/user'
 
 //
 
-import ChatArea from '@/components/chat-area'
-import ChatSidebar from '@/components/chat-sidebar'
+import ChatArea from '@/components/chat/chat-area'
+import ChatSidebar from '@/components/chat/chat-sidebar'
 
 // Mock data
 const currentUser: User = {
   id: 'user1',
   name: 'John Doe',
   email: 'john@example.com',
-  avatar: '/placeholder.svg?height=40&width=40',
+  profilePictureUrl: '/placeholder.svg?height=40&width=40',
 }
-
-const initialChats: Chat[] = [
-  {
-    id: 'chat1',
-    name: 'Jane Smith',
-    isGroup: false,
-    lastMessage: 'Hey, how are you?',
-    timestamp: '10:30 AM',
-    avatar: '/placeholder.svg?height=40&width=40',
-    unread: 2,
-    participants: [
-      {
-        id: 'user1',
-        name: 'John Doe',
-        avatar: '/placeholder.svg?height=40&width=40',
-      },
-      {
-        id: 'user2',
-        name: 'Jane Smith',
-        avatar: '/placeholder.svg?height=40&width=40',
-      },
-    ] as User[],
-  },
-  {
-    id: 'chat2',
-    name: 'Project Team',
-    isGroup: true,
-    lastMessage: 'Meeting at 2 PM',
-    timestamp: 'Yesterday',
-    avatar: '/placeholder.svg?height=40&width=40',
-    unread: 0,
-    participants: [
-      {
-        id: 'user1',
-        name: 'John Doe',
-        avatar: '/placeholder.svg?height=40&width=40',
-      },
-      {
-        id: 'user3',
-        name: 'Mike Johnson',
-        avatar: '/placeholder.svg?height=40&width=40',
-      },
-      {
-        id: 'user4',
-        name: 'Sarah Williams',
-        avatar: '/placeholder.svg?height=40&width=40',
-      },
-    ] as User[],
-  },
-  {
-    id: 'chat3',
-    name: 'Mike Johnson',
-    isGroup: false,
-    lastMessage: 'Can you send me the files?',
-    timestamp: 'Yesterday',
-    avatar: '/placeholder.svg?height=40&width=40',
-    unread: 0,
-    participants: [
-      {
-        id: 'user1',
-        name: 'John Doe',
-        avatar: '/placeholder.svg?height=40&width=40',
-      },
-      {
-        id: 'user3',
-        name: 'Mike Johnson',
-        avatar: '/placeholder.svg?height=40&width=40',
-      },
-    ] as User[],
-  },
-  {
-    id: 'chat4',
-    name: 'Design Team',
-    isGroup: true,
-    lastMessage: 'New mockups are ready',
-    timestamp: 'Monday',
-    avatar: '/placeholder.svg?height=40&width=40',
-    unread: 5,
-    participants: [
-      {
-        id: 'user1',
-        name: 'John Doe',
-        avatar: '/placeholder.svg?height=40&width=40',
-      },
-      {
-        id: 'user5',
-        name: 'Emily Davis',
-        avatar: '/placeholder.svg?height=40&width=40',
-      },
-      {
-        id: 'user6',
-        name: 'Alex Turner',
-        avatar: '/placeholder.svg?height=40&width=40',
-      },
-    ] as User[],
-  },
-]
 
 const initialMessages: Record<string, Message[]> = {
   chat1: [
@@ -249,7 +153,7 @@ export default function ChatPage() {
       isGroup: true,
       lastMessage: 'Group created',
       timestamp: 'Just now',
-      avatar: '/placeholder.svg?height=40&width=40',
+      profilePictureUrl: '/placeholder.svg?height=40&width=40',
       unread: 0,
       participants: [currentUser, ...participants],
     }

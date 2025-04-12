@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 
+import { updateMe } from '@/actions/me/update-me'
 import { UserProfile } from '@/types/user'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -42,7 +43,11 @@ export function UserSettingsForm({ user }: UserSettingsFormProps) {
     setIsSaving(true)
     try {
       // Simulate API call
-      console.log(data)
+      const payload = {
+        name: data.displayName,
+      }
+
+      await updateMe(payload)
       await new Promise((resolve) => setTimeout(resolve, 1000))
       toast('Settings updated successfully')
     } catch (error) {
@@ -62,13 +67,14 @@ export function UserSettingsForm({ user }: UserSettingsFormProps) {
           <AvatarImage src={user.profilePictureUrl} alt='User Avatar' />
           <AvatarFallback>{user.name.slice(0, 1)}</AvatarFallback>
         </Avatar>
-        <div className='space-y-4'>
+        <div className='w-full space-y-2'>
           <Label htmlFor='displayName'>Display Name</Label>
           <Input
             id='displayName'
             {...register('displayName')}
             placeholder='Enter your display name'
             disabled={isSaving}
+            className='w-full'
           />
           {errors.displayName && (
             <p className='text-sm text-red-500'>{errors.displayName.message}</p>

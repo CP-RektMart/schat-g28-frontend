@@ -299,7 +299,53 @@ export interface paths {
     delete?: never
     options?: never
     head?: never
-    patch?: never
+    /**
+     * Update me
+     * @description Update user's profile
+     */
+    patch: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      /** @description request request */
+      requestBody: {
+        content: {
+          'application/json': components['schemas']['dto.UserUpdateRequest']
+        }
+      }
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpResponse-dto_UserResponse']
+          }
+        }
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+      }
+    }
     trace?: never
   }
   '/api/v1/messages': {
@@ -488,6 +534,9 @@ export interface components {
       id?: number
       name?: string
       profilePictureUrl?: string
+    }
+    'dto.UserUpdateRequest': {
+      name?: string
     }
   }
   responses: never

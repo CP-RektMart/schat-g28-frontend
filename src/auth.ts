@@ -145,5 +145,3 @@ declare module 'next-auth/jwt' {
     user?: UserType
   }
 }
-
-console.log(handlers, signIn, signOut, auth)

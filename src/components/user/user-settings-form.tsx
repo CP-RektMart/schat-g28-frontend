@@ -42,10 +42,14 @@ export function UserSettingsForm({ user }: UserSettingsFormProps) {
     setIsSaving(true)
     try {
       // Simulate API call
+      console.log(data)
       await new Promise((resolve) => setTimeout(resolve, 1000))
       toast('Settings updated successfully')
     } catch (error) {
-      toast('Failed to update settings')
+      toast(
+        'Failed to update settings:' +
+          (error instanceof Error ? error.message : 'Unknown error')
+      )
     } finally {
       setIsSaving(false)
     }

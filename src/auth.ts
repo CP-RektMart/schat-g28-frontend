@@ -4,6 +4,7 @@ import Google from 'next-auth/providers/google'
 import { NextRequest } from 'next/server'
 
 import { client } from './api/client'
+import { User as UserType } from './types/user'
 
 export const { handlers, signIn, signOut, auth } = NextAuth(
   async (req: NextRequest | undefined) => {
@@ -13,18 +14,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth(
         maxAge: 7 * 24 * 60 * 60, // 7 days
       },
       pages: {
-        signIn: '/login',
-        signOut: '/',
-        error: '/sign-up',
+        signIn: '/',
+        signOut: '/chat',
+        error: '/',
       },
       callbacks: {
         signIn: async ({ user, account }) => {
-          const role = req && req.cookies.get('role')?.value
+          const goLogin = req && req.cookies.get('gu-ja-login')?.value
 
           if (!account || !account.id_token) return false
 
           // Register
-          if (role) {
+          if (goLogin) {
             try {
               const { data, response } = await client.POST(
                 '/api/v1/auth/register',
@@ -107,7 +108,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth(
           }
           if (token?.user) {
             session.user.userId = token.user.id as number
-            session.user.phoneNumber = token.user.phoneNumber
           }
 
           return session
@@ -145,3 +145,5 @@ declare module 'next-auth/jwt' {
     user?: UserType
   }
 }
+
+console.log(handlers, signIn, signOut, auth)

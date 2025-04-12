@@ -1,4 +1,4 @@
-// export type User = components['schemas']['dto.UserResponse']
+import { components } from '@/api/schema'
 
 export type UserProfile = {
   id?: number
@@ -6,3 +6,5 @@ export type UserProfile = {
   email: string
   profilePictureUrl: string
 }
+
+export type User = components['schemas']['dto.UserResponse']

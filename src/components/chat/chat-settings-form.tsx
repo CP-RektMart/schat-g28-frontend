@@ -40,11 +40,15 @@ export function ChatSettingsForm({ chat }: ChatSettingsFormProps) {
   const onSubmit = async (data: { displayName: string }) => {
     setIsSaving(true)
     try {
+      console.log(data)
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000))
       toast('Settings updated successfully')
     } catch (error) {
-      toast('Failed to update settings')
+      toast(
+        'Failed to update settings: ' +
+          (error instanceof Error ? error.message : 'Unknown error')
+      )
     } finally {
       setIsSaving(false)
     }

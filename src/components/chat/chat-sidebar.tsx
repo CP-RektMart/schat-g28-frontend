@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 
+import { logout } from '@/actions/me/logout'
 import { mockUsers } from '@/mock/mock-users'
 //TODO: Type of data
 import type { Chat } from '@/types/chat'
@@ -16,7 +17,7 @@ import {
   Users,
   X,
 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { signOut } from 'next-auth/react'
 
 import { UserSettings } from '@/components//user/user-settings'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -55,13 +56,11 @@ export default function ChatSidebar({
   isMobileMenuOpen,
   setIsMobileMenuOpen,
 }: ChatSidebarProps) {
-  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
-  const [newPartner, setNewPartner] = useState('')
   const [initialMessage, setInitialMessage] = useState('')
   const [newGroupName, setNewGroupName] = useState('')
   const [groupIdToJoin, setGroupIdToJoin] = useState('')
-
+  const [selectedNewPartner, setSelectNewPartner] = useState<User>({})
   const [selectedUsers, setSelectedUsers] = useState<User[]>([])
 
   const handleCreateGroup = () => {
@@ -91,8 +90,16 @@ export default function ChatSidebar({
     chat.name.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
-  const handleLogout = () => {
-    router.push('/')
+  const handleLogout = async () => {
+    const result = await logout()
+    if (result?.error) {
+      console.error(result.error)
+      return
+    }
+    await signOut({
+      redirect: true,
+      redirectTo: '/',
+    })
   }
 
   return (
@@ -113,7 +120,7 @@ export default function ChatSidebar({
       <div
         className={`${
           isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-        } fixed inset-y-0 left-0 z-40 w-80 transform bg-white shadow-lg transition-transform duration-300 ease-in-out md:relative md:translate-x-0`}
+        } md: fixed inset-y-0 left-0 z-40 w-full max-w-[340px] transform bg-white shadow-lg transition-transform duration-300 ease-in-out md:relative md:translate-x-0 lg:max-w-96`}
       >
         <div className='flex h-full flex-col'>
           {/* User profile */}
@@ -124,11 +131,15 @@ export default function ChatSidebar({
                   src={currentUser.profilePictureUrl}
                   alt={currentUser.name}
                 />
-                <AvatarFallback>{currentUser.name.charAt(0)}</AvatarFallback>
+                <AvatarFallback>
+                  {currentUser.name?.charAt(0) ?? 'U'}
+                </AvatarFallback>
               </Avatar>
-              <div>
-                <h3 className='font-medium'>{currentUser.name}</h3>
-                <p className='text-xs text-gray-500'>{currentUser.email}</p>
+              <div className='max-w-40'>
+                <h3 className='line-clamp-1 font-medium'>{currentUser.name}</h3>
+                <p className='line-clamp-1 text-gray-500'>
+                  {currentUser.email + 'kudsadsadsadasdasdasdykuykuykuy'}
+                </p>
               </div>
             </div>
             <div>
@@ -176,11 +187,14 @@ export default function ChatSidebar({
                           <div
                             key={user.id}
                             className={`flex cursor-pointer items-center justify-between rounded-md p-2 ${
-                              selectedUsers.some((u) => u.id === user.id)
+                              selectedNewPartner.id === user.id
                                 ? 'bg-gray-100'
                                 : ''
                             }`}
-                            onClick={() => toggleUserSelection(user)}
+                            onClick={() => {
+                              toggleUserSelection(user)
+                              setSelectNewPartner(user)
+                            }}
                           >
                             <div className='flex items-center space-x-3'>
                               <Avatar className='h-8 w-8'>
@@ -201,7 +215,7 @@ export default function ChatSidebar({
                                 </p>
                               </div>
                             </div>
-                            {selectedUsers.some((u) => u.id === user.id) && (
+                            {selectedNewPartner === user.id && (
                               <div className='h-4 w-4 rounded-full bg-gray-900'></div>
                             )}
                           </div>

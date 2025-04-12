@@ -1,15 +1,21 @@
 'use client'
 
+import { guJaLogin } from '@/actions/me/set-cookie'
 import { MessageCircle } from 'lucide-react'
-import { redirect } from 'next/navigation'
+import { signIn } from 'next-auth/react'
 
 import { Button } from '@/components/ui/button'
 
 export default function LoginPage() {
   // This would be replaced with actual auth logic
-  const handleLogin = () => {
+  const handleLogin = async (login: boolean) => {
+    if (login) await guJaLogin('gjl')
+    else await guJaLogin('gjs')
     // Simulate login and redirect
-    redirect('/chat')
+    await signIn('google', {
+      redirect: true,
+      callbackUrl: '/chat',
+    })
   }
 
   return (
@@ -25,11 +31,23 @@ export default function LoginPage() {
 
         <div className='mt-8 space-y-4'>
           <Button
-            onClick={handleLogin}
+            onClick={() => {
+              handleLogin(true)
+            }}
+            className='flex w-full items-center hover:opacity-90'
+            variant='outline'
+          >
+            <span className='text-xl font-bold'>G</span>
+            <span>Log in with Google</span>
+          </Button>
+          <Button
+            onClick={() => {
+              handleLogin(true)
+            }}
             className='flex w-full items-center justify-center gap-2 bg-gradient-to-r from-red-500 via-yellow-500 to-blue-500 text-white hover:opacity-90'
             variant='outline'
           >
-            <span className='text-xl font-black'>G</span>
+            <span className='text-xl font-bold'>G</span>
             <span>Sign in with Google</span>
           </Button>
 

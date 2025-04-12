@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "generate": "openapi-typescript http://localhost:8000/openapi -o ./src/api/schema.d.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
@@ -23,8 +24,9 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.487.0",
     "next": "15.2.4",
-    "next-auth": "^4.24.11",
+    "next-auth": "5.0.0-beta.25",
     "next-themes": "^0.4.6",
+    "openapi-fetch": "^0.13.5",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -44,9 +46,10 @@
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
     "husky": "^9.1.7",
+    "openapi-typescript": "^7.6.1",
     "prettier": "3.5.3",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5"
+    "typescript": "^5.8.2"
   },
   "packageManager": "pnpm@10.6.3+sha512.bb45e34d50a9a76e858a95837301bfb6bd6d35aea2c5d52094fa497a467c43f5c440103ce2511e9e0a2f89c3d6071baac3358fc68ac6fb75e2ceb3d2736065e6"
 }

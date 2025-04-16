@@ -1,6 +1,6 @@
 'use client'
 
-import { UserProfile } from '@/types/user'
+import { User } from '@/types/user'
 import { Settings } from 'lucide-react'
 
 import {
@@ -15,7 +15,7 @@ import { UserSettingsForm } from '@/components/user/user-settings-form'
 import { Button } from '../ui/button'
 
 export interface UserSettingsProps {
-  user: UserProfile
+  user: User
 }
 
 export function UserSettings({ user }: UserSettingsProps) {

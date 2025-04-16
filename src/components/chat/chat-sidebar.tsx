@@ -19,7 +19,6 @@ import {
 } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 
-import { UserSettings } from '@/components//user/user-settings'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -34,6 +33,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Textarea } from '@/components/ui/textarea'
+import { UserSettings } from '@/components/user/user-settings'
 
 interface ChatSidebarProps {
   chats: Chat[]
@@ -138,7 +138,10 @@ export default function ChatSidebar({
               <div className='max-w-40'>
                 <h3 className='line-clamp-1 font-medium'>{currentUser.name}</h3>
                 <p className='line-clamp-1 text-gray-500'>
-                  {currentUser.email + 'kudsadsadsadasdasdasdykuykuykuy'}
+                  <span>ID: </span>
+                  <Badge variant={'secondary'} className='text-xs font-normal'>
+                    {currentUser.id}
+                  </Badge>
                 </p>
               </div>
             </div>
@@ -160,7 +163,7 @@ export default function ChatSidebar({
             <div className='relative mb-4'>
               <Search className='absolute left-3 top-2.5 h-4 w-4 text-gray-400' />
               <Input
-                placeholder='Search conversations...'
+                placeholder='Search Chat'
                 className='pl-9'
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -380,12 +383,9 @@ export default function ChatSidebar({
                         <div className='flex items-center'>
                           <h3 className='font-medium'>{chat.name}</h3>
                           {chat.isGroup && (
-                            <Badge
-                              variant='outline'
-                              className='ml-2 bg-gray-100 text-xs'
-                            >
-                              G
-                            </Badge>
+                            <span className='ml-1 text-xs'>
+                              ({chat.participants.length})
+                            </span>
                           )}
                         </div>
                         <p className='line-clamp-1 text-sm text-gray-500'>

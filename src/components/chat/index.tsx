@@ -2,8 +2,6 @@
 
 import { useState } from 'react'
 
-import { initialChats } from '@/mock/initial-chat'
-import { initialMessages } from '@/mock/initial-messages'
 import type { Chat } from '@/types/chat'
 import type { Message } from '@/types/message'
 import type { User } from '@/types/user'
@@ -16,9 +14,8 @@ export interface ChatPageProps {
 }
 
 export default function ChatPageComponent({ currentUser }: ChatPageProps) {
-  const [chats, setChats] = useState<Chat[]>(initialChats)
-  const [messages, setMessages] =
-    useState<Record<string, Message[]>>(initialMessages)
+  const [chats, setChats] = useState<Chat[]>([])
+  const [messages, setMessages] = useState<Record<string, Message[]>>({})
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 

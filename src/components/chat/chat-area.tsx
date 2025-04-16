@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { Chat } from '@/types/chat'
 import type { Message } from '@/types/message'
 //TODO: change type config
-import type { UserProfile as User } from '@/types/user'
+import type { User } from '@/types/user'
 import { Edit, Menu, MoreVertical, Send, Trash2 } from 'lucide-react'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'

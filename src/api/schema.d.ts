@@ -13,10 +13,7 @@ export interface paths {
     }
     get?: never
     put?: never
-    /**
-     * Login
-     * @description Login
-     */
+    /** Login */
     post: {
       parameters: {
         query?: never
@@ -75,10 +72,7 @@ export interface paths {
     }
     get?: never
     put?: never
-    /**
-     * Logout
-     * @description Logout
-     */
+    /** Logout */
     post: {
       parameters: {
         query?: never
@@ -88,15 +82,15 @@ export interface paths {
       }
       requestBody?: never
       responses: {
-        /** @description No Content */
-        204: {
+        /** @description OK */
+        200: {
           headers: {
             [name: string]: unknown
           }
           content?: never
         }
-        /** @description Bad Request */
-        400: {
+        /** @description Unauthorized */
+        401: {
           headers: {
             [name: string]: unknown
           }
@@ -130,10 +124,7 @@ export interface paths {
     }
     get?: never
     put?: never
-    /**
-     * Refresh Token
-     * @description Refresh Token
-     */
+    /** Refresh Token */
     post: {
       parameters: {
         query?: never
@@ -141,7 +132,7 @@ export interface paths {
         path?: never
         cookie?: never
       }
-      /** @description request request */
+      /** @description body */
       requestBody: {
         content: {
           'application/json': components['schemas']['dto.RefreshTokenRequest']
@@ -183,7 +174,169 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/api/v1/auth/register': {
+  '/api/v1/chats': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** list chat */
+    get: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpResponse-ChatListResponse']
+          }
+        }
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+      }
+    }
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/v1/chats/friends/{friendID}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** get dm chats detail */
+    get: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpResponse-dto_DirectChatDetailResponse']
+          }
+        }
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+      }
+    }
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/v1/files': {
     parameters: {
       query?: never
       header?: never
@@ -192,10 +345,7 @@ export interface paths {
     }
     get?: never
     put?: never
-    /**
-     * Register
-     * @description Register
-     */
+    /** upload file */
     post: {
       parameters: {
         query?: never
@@ -203,10 +353,10 @@ export interface paths {
         path?: never
         cookie?: never
       }
-      /** @description request request */
+      /** @description file */
       requestBody: {
         content: {
-          'application/json': components['schemas']['dto.RegisterRequest']
+          'application/x-www-form-urlencoded': Record<string, never>
         }
       }
       responses: {
@@ -216,11 +366,20 @@ export interface paths {
             [name: string]: unknown
           }
           content: {
-            'application/json': components['schemas']['dto.HttpResponse-dto_RegisterResponse']
+            'application/json': components['schemas']['dto.HttpResponse-dto_FileDetailResponse']
           }
         }
         /** @description Bad Request */
         400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Unauthorized */
+        401: {
           headers: {
             [name: string]: unknown
           }
@@ -240,6 +399,906 @@ export interface paths {
       }
     }
     delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/v1/files/{fileID}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /** delete file */
+    delete: {
+      parameters: {
+        query?: never
+        header?: never
+        path: {
+          /** @description file id */
+          fileID: number
+        }
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content?: never
+        }
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+      }
+    }
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/v1/friends': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** list user's friends */
+    get: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpListResponse-dto_UserResponse']
+          }
+        }
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+      }
+    }
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/v1/friends/{friendID}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** add friend */
+    post: {
+      parameters: {
+        query?: never
+        header?: never
+        path: {
+          /** @description friend id */
+          friendID: number
+        }
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content?: never
+        }
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+      }
+    }
+    /** unfriend */
+    delete: {
+      parameters: {
+        query?: never
+        header?: never
+        path: {
+          /** @description friend id */
+          friendID: number
+        }
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content?: never
+        }
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+      }
+    }
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/v1/groups': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** create group */
+    post: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      /** @description group detail */
+      requestBody: {
+        content: {
+          'application/json': components['schemas']['dto.CreateGroupRequest']
+        }
+      }
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content?: never
+        }
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+      }
+    }
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/v1/groups/{groupID}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** get group */
+    get: {
+      parameters: {
+        query?: never
+        header?: never
+        path: {
+          /** @description group id */
+          groupID: number
+        }
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpResponse-dto_GroupDetailResponse']
+          }
+        }
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+      }
+    }
+    put?: never
+    post?: never
+    /** delete group */
+    delete: {
+      parameters: {
+        query?: never
+        header?: never
+        path: {
+          /** @description group id */
+          groupID: number
+        }
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content?: never
+        }
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+      }
+    }
+    options?: never
+    head?: never
+    /** update group */
+    patch: {
+      parameters: {
+        query?: never
+        header?: never
+        path: {
+          /** @description group id */
+          groupID: number
+        }
+        cookie?: never
+      }
+      /** @description group detail */
+      requestBody: {
+        content: {
+          'application/json': components['schemas']['dto.UpdateGroupRequest']
+        }
+      }
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content?: never
+        }
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+      }
+    }
+    trace?: never
+  }
+  '/api/v1/groups/{groupID}/join': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** join group */
+    get: {
+      parameters: {
+        query?: never
+        header?: never
+        path: {
+          /** @description group id */
+          groupID: number
+        }
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+      }
+    }
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/v1/groups/{groupID}/leave': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** leave group */
+    get: {
+      parameters: {
+        query?: never
+        header?: never
+        path: {
+          /** @description group id */
+          groupID: number
+        }
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+      }
+    }
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/v1/groups/{groupID}/members/{userID}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** add group member */
+    post: {
+      parameters: {
+        query?: never
+        header?: never
+        path: {
+          /** @description group id */
+          groupID: number
+          /** @description friend id */
+          userID: number
+        }
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content?: never
+        }
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+      }
+    }
+    /** kick group member */
+    delete: {
+      parameters: {
+        query?: never
+        header?: never
+        path: {
+          /** @description group id */
+          groupID: number
+          /** @description friend id */
+          userID: number
+        }
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content?: never
+        }
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['dto.HttpError']
+          }
+        }
+      }
+    }
     options?: never
     head?: never
     patch?: never
@@ -322,9 +1381,7 @@ export interface paths {
           headers: {
             [name: string]: unknown
           }
-          content: {
-            'application/json': components['schemas']['dto.HttpResponse-dto_UserResponse']
-          }
+          content?: never
         }
         /** @description Bad Request */
         400: {
@@ -346,72 +1403,6 @@ export interface paths {
         }
       }
     }
-    trace?: never
-  }
-  '/api/v1/messages': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /**
-     * list all direct message chats
-     * @description list all direct message chats for each individual user
-     */
-    get: {
-      parameters: {
-        query?: never
-        header?: never
-        path?: never
-        cookie?: never
-      }
-      requestBody?: never
-      responses: {
-        /** @description OK */
-        200: {
-          headers: {
-            [name: string]: unknown
-          }
-          content: {
-            'application/json': components['schemas']['dto.HttpListResponse-dto_ChatDirectResponse']
-          }
-        }
-        /** @description Unauthorized */
-        401: {
-          headers: {
-            [name: string]: unknown
-          }
-          content: {
-            'application/json': components['schemas']['dto.HttpError']
-          }
-        }
-        /** @description Not Found */
-        404: {
-          headers: {
-            [name: string]: unknown
-          }
-          content: {
-            'application/json': components['schemas']['dto.HttpError']
-          }
-        }
-        /** @description Internal Server Error */
-        500: {
-          headers: {
-            [name: string]: unknown
-          }
-          content: {
-            'application/json': components['schemas']['dto.HttpError']
-          }
-        }
-      }
-    }
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
     trace?: never
   }
   '/api/v1/messages/ws': {
@@ -464,9 +1455,22 @@ export interface paths {
 export type webhooks = Record<string, never>
 export interface components {
   schemas: {
-    'dto.ChatDirectResponse': {
+    'dto.ChatListResponse': {
+      directs?: components['schemas']['dto.DirectChatListResponse'][]
+      groups?: components['schemas']['dto.GroupChatListResponse'][]
+    }
+    'dto.CreateGroupRequest': {
+      memberIds?: number[]
+      name?: string
+      profilePictureUrl?: string
+    }
+    'dto.DirectChatDetailResponse': {
       messages?: components['schemas']['dto.DirectMessageResponse'][]
-      user?: components['schemas']['dto.PublicUserResponse']
+      user?: components['schemas']['dto.UserResponse']
+    }
+    'dto.DirectChatListResponse': {
+      lastMessage?: components['schemas']['dto.DirectMessageResponse']
+      user?: components['schemas']['dto.UserResponse']
     }
     'dto.DirectMessageResponse': {
       content?: string
@@ -475,17 +1479,57 @@ export interface components {
       sendedAt?: string
       senderId?: number
     }
+    'dto.FileDetailResponse': {
+      id?: number
+      ownerId?: number
+      path?: string
+      url?: string
+    }
+    'dto.GroupChatListResponse': {
+      group?: components['schemas']['dto.GroupListResponse']
+      lastMessage?: components['schemas']['dto.GroupMessageResponse'][]
+    }
+    'dto.GroupDetailResponse': {
+      id?: number
+      members?: components['schemas']['dto.UserResponse'][]
+      messages?: components['schemas']['dto.GroupMessageResponse'][]
+      name?: string
+      owner?: components['schemas']['dto.UserResponse']
+      profilePictureURL?: string
+    }
+    'dto.GroupListResponse': {
+      id?: number
+      name?: string
+      owner?: components['schemas']['dto.UserResponse']
+      profilePictureURL?: string
+    }
+    'dto.GroupMessageResponse': {
+      content?: string
+      groupId?: number
+      id?: number
+      sendedAt?: string
+      senderId?: number
+    }
     'dto.HttpError': {
       error?: string
     }
-    'dto.HttpListResponse-dto_ChatDirectResponse': {
-      result?: components['schemas']['dto.ChatDirectResponse'][]
+    'dto.HttpListResponse-dto_UserResponse': {
+      result?: components['schemas']['dto.UserResponse'][]
+    }
+    'dto.HttpResponse-ChatListResponse': {
+      result?: components['schemas']['dto.ChatListResponse']
+    }
+    'dto.HttpResponse-dto_DirectChatDetailResponse': {
+      result?: components['schemas']['dto.DirectChatDetailResponse']
+    }
+    'dto.HttpResponse-dto_FileDetailResponse': {
+      result?: components['schemas']['dto.FileDetailResponse']
+    }
+    'dto.HttpResponse-dto_GroupDetailResponse': {
+      result?: components['schemas']['dto.GroupDetailResponse']
     }
     'dto.HttpResponse-dto_LoginResponse': {
       result?: components['schemas']['dto.LoginResponse']
-    }
-    'dto.HttpResponse-dto_RegisterResponse': {
-      result?: components['schemas']['dto.RegisterResponse']
     }
     'dto.HttpResponse-dto_TokenResponse': {
       result?: components['schemas']['dto.TokenResponse']
@@ -494,9 +1538,7 @@ export interface components {
       result?: components['schemas']['dto.UserResponse']
     }
     'dto.LoginRequest': {
-      idToken: string
-      /** @description GOOGLE */
-      provider: string
+      idToken?: string
     }
     'dto.LoginResponse': {
       accessToken?: string
@@ -504,39 +1546,31 @@ export interface components {
       refreshToken?: string
       user?: components['schemas']['dto.UserResponse']
     }
-    'dto.PublicUserResponse': {
-      email?: string
-      id?: number
-      name?: string
-      profilePictureUrl?: string
-    }
     'dto.RefreshTokenRequest': {
-      refreshToken: string
-    }
-    'dto.RegisterRequest': {
-      idToken: string
-      /** @description GOOGLE */
-      provider: string
-    }
-    'dto.RegisterResponse': {
-      accessToken?: string
-      exp?: number
       refreshToken?: string
-      user?: components['schemas']['dto.UserResponse']
     }
     'dto.TokenResponse': {
       accessToken?: string
       exp?: number
       refreshToken?: string
     }
+    'dto.UpdateGroupRequest': {
+      id?: number
+      name?: string
+      profilePicture?: string
+    }
     'dto.UserResponse': {
       email?: string
+      friends?: components['schemas']['dto.UserResponse'][]
+      groups?: components['schemas']['dto.GroupListResponse'][]
       id?: number
       name?: string
       profilePictureUrl?: string
     }
     'dto.UserUpdateRequest': {
+      email?: string
       name?: string
+      profilePictureUrl?: string
     }
   }
   responses: never

@@ -1,13 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { logout } from '@/actions/me/logout'
+import { MAX_FILES, MAX_FILE_SIZE } from '@/config/index'
 import { mockUsers } from '@/mock/mock-users'
-//TODO: Type of data
 import type { Chat } from '@/types/chat'
 import type { User } from '@/types/user'
-//
 import {
   LogOut,
   Menu,
@@ -18,6 +17,8 @@ import {
   X,
 } from 'lucide-react'
 import { signOut } from 'next-auth/react'
+import Image from 'next/image'
+import { useDropzone } from 'react-dropzone'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
@@ -35,6 +36,8 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Textarea } from '@/components/ui/textarea'
 import { UserSettings } from '@/components/user/user-settings'
 
+import { ChatFriendList } from './chat-friendlist'
+
 interface ChatSidebarProps {
   chats: Chat[]
   selectedChat: Chat | null
@@ -44,6 +47,10 @@ interface ChatSidebarProps {
   currentUser: User
   isMobileMenuOpen: boolean
   setIsMobileMenuOpen: (open: boolean) => void
+}
+
+export type PhotoCardForm = {
+  image: File
 }
 
 export default function ChatSidebar({
@@ -62,6 +69,22 @@ export default function ChatSidebar({
   const [groupIdToJoin, setGroupIdToJoin] = useState('')
   const [selectedNewPartner, setSelectNewPartner] = useState<User>({})
   const [selectedUsers, setSelectedUsers] = useState<User[]>([])
+  const [photoCards, setPhotoCards] = useState<PhotoCardForm>()
+
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    if (acceptedFiles[0]) {
+      const file = { image: acceptedFiles[0] }
+      setPhotoCards(file)
+    }
+  }, [])
+
+  const { getRootProps, getInputProps, isDragActive, fileRejections } =
+    useDropzone({
+      onDrop,
+      maxFiles: MAX_FILES,
+      maxSize: MAX_FILE_SIZE,
+      accept: { 'image/png': [], 'image/jpg': [], 'image/jpeg': [] },
+    })
 
   const handleCreateGroup = () => {
     if (newGroupName.trim() && selectedUsers.length > 0) {
@@ -137,12 +160,10 @@ export default function ChatSidebar({
               </Avatar>
               <div className='max-w-40'>
                 <h3 className='line-clamp-1 font-medium'>{currentUser.name}</h3>
-                <p className='line-clamp-1 text-gray-500'>
-                  <span>ID: </span>
-                  <Badge variant={'secondary'} className='text-xs font-normal'>
-                    {currentUser.id}
-                  </Badge>
-                </p>
+                <span>ID: </span>
+                <Badge variant={'secondary'} className='text-xs font-normal'>
+                  {currentUser.id}
+                </Badge>
               </div>
             </div>
             <div>
@@ -171,6 +192,7 @@ export default function ChatSidebar({
             </div>
             {/* Start a new direct conversation or group chat */}
             <div className='flex flex-col space-y-2'>
+              {/* direct msg chat */}
               <Dialog>
                 <DialogTrigger asChild>
                   <Button className='flex-1'>
@@ -180,11 +202,11 @@ export default function ChatSidebar({
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
-                    <DialogTitle>Message with new partner</DialogTitle>
+                    <DialogTitle>Message with new friend</DialogTitle>
                   </DialogHeader>
                   <div className='space-y-4 py-4'>
                     <div className='space-y-2'>
-                      <Label>Select Participants</Label>
+                      <Label>Select your friend</Label>
                       <div className='max-h-60 space-y-2 overflow-y-auto rounded-md border p-2'>
                         {mockUsers.map((user) => (
                           <div
@@ -249,6 +271,7 @@ export default function ChatSidebar({
                 </DialogContent>
               </Dialog>
 
+              {/* group chat */}
               <Dialog>
                 <DialogTrigger asChild>
                   <Button className='flex-1' variant='primary'>
@@ -262,6 +285,39 @@ export default function ChatSidebar({
                   </DialogHeader>
                   <div className='space-y-4 py-4'>
                     <div className='space-y-2'>
+                      <div>
+                        <div>
+                          {photoCards && (
+                            <div className='mt-2 flex items-center justify-center space-x-4 pb-4'>
+                              <div className='h-32 w-32 overflow-hidden rounded-full object-cover'>
+                                <Image
+                                  src={URL.createObjectURL(photoCards.image)}
+                                  alt='Uploaded preview'
+                                  width={256}
+                                  height={256}
+                                />
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                        <div
+                          {...getRootProps()}
+                          className='flex max-h-10 cursor-pointer flex-row items-center justify-center gap-x-2 rounded-lg bg-zinc-50 py-2'
+                        >
+                          <Input {...getInputProps()} type='file' />
+                          {isDragActive ? (
+                            <p className='text-sm'>Drop the image!</p>
+                          ) : (
+                            <p className='text-sm'>Upload Photos</p>
+                          )}
+                        </div>
+                        {fileRejections.length !== 0 && (
+                          <p>
+                            Image must be less than 10 MB and of type png, jpg,
+                            or jpeg
+                          </p>
+                        )}
+                      </div>
                       <Label htmlFor='group-name'>Group Name</Label>
                       <Input
                         id='group-name'
@@ -271,43 +327,12 @@ export default function ChatSidebar({
                       />
                     </div>
                     <div className='space-y-2'>
-                      <Label>Select Participants</Label>
-                      <div className='max-h-60 space-y-2 overflow-y-auto rounded-md border p-2'>
-                        {mockUsers.map((user) => (
-                          <div
-                            key={user.id}
-                            className={`flex cursor-pointer items-center justify-between rounded-md p-2 ${
-                              selectedUsers.some((u) => u.id === user.id)
-                                ? 'bg-gray-100'
-                                : ''
-                            }`}
-                            onClick={() => toggleUserSelection(user)}
-                          >
-                            <div className='flex items-center space-x-3'>
-                              <Avatar className='h-8 w-8'>
-                                <AvatarImage
-                                  src={user.profilePictureUrl}
-                                  alt={user.name}
-                                />
-                                <AvatarFallback>
-                                  {user.name.charAt(0)}
-                                </AvatarFallback>
-                              </Avatar>
-                              <div>
-                                <p className='text-sm font-medium'>
-                                  {user.name}
-                                </p>
-                                <p className='text-xs text-gray-500'>
-                                  {user.email}
-                                </p>
-                              </div>
-                            </div>
-                            {selectedUsers.some((u) => u.id === user.id) && (
-                              <div className='h-4 w-4 rounded-full bg-gray-900'></div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
+                      <Label>Select your friends</Label>
+                      <ChatFriendList
+                        friends={currentUser.friends}
+                        selectedUsers={selectedUsers}
+                        handleSelectUsers={toggleUserSelection}
+                      />
                     </div>
                     <Button
                       className='w-full'
@@ -322,6 +347,7 @@ export default function ChatSidebar({
                 </DialogContent>
               </Dialog>
 
+              {/* join group */}
               <Dialog>
                 <DialogTrigger asChild>
                   <Button variant='outline' className='flex-1'>

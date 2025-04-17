@@ -9,6 +9,7 @@ import type { Message } from '@/types/message'
 import type { User } from '@/types/user'
 import { Edit, Menu, MoreVertical, Send, Trash2 } from 'lucide-react'
 
+import { GroupSettings } from '@/components/group/group-settings'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -20,8 +21,6 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
-
-import { ChatSettings } from './chat-settings'
 
 //
 
@@ -151,7 +150,7 @@ export default function ChatArea({
             </p>
           </div>
         </div>
-        {chat.isGroup && <ChatSettings chat={chat} />}
+        {chat.isGroup && <GroupSettings group={chat} />}
       </div>
 
       {/* Messages area */}

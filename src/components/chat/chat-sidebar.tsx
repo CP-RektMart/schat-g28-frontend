@@ -2,13 +2,12 @@
 
 import { useCallback, useState } from 'react'
 
+import { addFriend } from '@/actions/friend/add-friend'
 import { logout } from '@/actions/me/logout'
 import { MAX_FILES, MAX_FILE_SIZE } from '@/config/index'
-import { mockUsers } from '@/mock/mock-users'
-import type { Chat } from '@/types/chat'
+import type { Chat } from '@/types/group'
 import type { User } from '@/types/user'
 import {
-  LogOut,
   Menu,
   MessageSquareMore,
   Search,
@@ -34,11 +33,13 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Textarea } from '@/components/ui/textarea'
-import { UserSettings } from '@/components/user/user-settings'
 
+import { AddFriendDialog } from '../friend/friend-add'
+import { UserProfile } from '../user/user-profile'
 import { ChatFriendList } from './chat-friendlist'
 
 interface ChatSidebarProps {
+  friends: User[]
   chats: Chat[]
   selectedChat: Chat | null
   onSelectChat: (chat: Chat) => void
@@ -52,8 +53,8 @@ interface ChatSidebarProps {
 export type PhotoCardForm = {
   image: File
 }
-
 export default function ChatSidebar({
+  friends,
   chats,
   selectedChat,
   onSelectChat,
@@ -66,6 +67,7 @@ export default function ChatSidebar({
   const [searchQuery, setSearchQuery] = useState('')
   const [initialMessage, setInitialMessage] = useState('')
   const [newGroupName, setNewGroupName] = useState('')
+  const [newFriend, setNewFriend] = useState('')
   const [groupIdToJoin, setGroupIdToJoin] = useState('')
   const [selectedNewPartner, setSelectNewPartner] = useState<User>({})
   const [selectedUsers, setSelectedUsers] = useState<User[]>([])
@@ -98,6 +100,25 @@ export default function ChatSidebar({
     if (groupIdToJoin.trim()) {
       onJoinGroup(groupIdToJoin)
       setGroupIdToJoin('')
+    }
+  }
+
+  const handleAddFriend = async () => {
+    if (newFriend.trim()) {
+      const payload = {
+        userId: parseInt(newFriend),
+      }
+
+      await addFriend(payload)
+      setNewFriend('')
+    }
+  }
+
+  const togglePartnerSelection = (user: User) => {
+    if (selectedNewPartner.id === user.id) {
+      setSelectNewPartner({} as User)
+    } else {
+      setSelectNewPartner(user)
     }
   }
 
@@ -147,38 +168,7 @@ export default function ChatSidebar({
       >
         <div className='flex h-full flex-col'>
           {/* User profile */}
-          <div className='flex items-center justify-between border-b p-4'>
-            <div className='flex items-center space-x-3'>
-              <Avatar>
-                <AvatarImage
-                  src={currentUser.profilePictureUrl}
-                  alt={currentUser.name}
-                />
-                <AvatarFallback>
-                  {currentUser.name?.charAt(0) ?? 'U'}
-                </AvatarFallback>
-              </Avatar>
-              <div className='max-w-40'>
-                <h3 className='line-clamp-1 font-medium'>{currentUser.name}</h3>
-                <span>ID: </span>
-                <Badge variant={'secondary'} className='text-xs font-normal'>
-                  {currentUser.id}
-                </Badge>
-              </div>
-            </div>
-            <div>
-              <UserSettings user={currentUser} />
-              <Button
-                variant='ghost'
-                size='icon'
-                onClick={handleLogout}
-                title='Logout'
-              >
-                <LogOut className='h-5 w-5' />
-              </Button>
-            </div>
-          </div>
-
+          <UserProfile currentUser={currentUser} handleLogout={handleLogout} />
           {/* Search and actions */}
           <div className='border-b p-4'>
             <div className='relative mb-4'>
@@ -207,45 +197,11 @@ export default function ChatSidebar({
                   <div className='space-y-4 py-4'>
                     <div className='space-y-2'>
                       <Label>Select your friend</Label>
-                      <div className='max-h-60 space-y-2 overflow-y-auto rounded-md border p-2'>
-                        {mockUsers.map((user) => (
-                          <div
-                            key={user.id}
-                            className={`flex cursor-pointer items-center justify-between rounded-md p-2 ${
-                              selectedNewPartner.id === user.id
-                                ? 'bg-gray-100'
-                                : ''
-                            }`}
-                            onClick={() => {
-                              toggleUserSelection(user)
-                              setSelectNewPartner(user)
-                            }}
-                          >
-                            <div className='flex items-center space-x-3'>
-                              <Avatar className='h-8 w-8'>
-                                <AvatarImage
-                                  src={user.profilePictureUrl}
-                                  alt={user.name}
-                                />
-                                <AvatarFallback>
-                                  {user.name.charAt(0)}
-                                </AvatarFallback>
-                              </Avatar>
-                              <div>
-                                <p className='text-sm font-medium'>
-                                  {user.name}
-                                </p>
-                                <p className='text-xs text-gray-500'>
-                                  {user.email}
-                                </p>
-                              </div>
-                            </div>
-                            {selectedNewPartner === user.id && (
-                              <div className='h-4 w-4 rounded-full bg-gray-900'></div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
+                      <ChatFriendList
+                        friends={friends}
+                        selectedNewPartner={selectedNewPartner}
+                        handleSelectUsers={togglePartnerSelection}
+                      />
                     </div>
                     <div className='space-y-2'>
                       <Label htmlFor='initial-message'>First Message</Label>
@@ -329,7 +285,7 @@ export default function ChatSidebar({
                     <div className='space-y-2'>
                       <Label>Select your friends</Label>
                       <ChatFriendList
-                        friends={currentUser.friends}
+                        friends={friends}
                         selectedUsers={selectedUsers}
                         handleSelectUsers={toggleUserSelection}
                       />
@@ -350,7 +306,7 @@ export default function ChatSidebar({
               {/* join group */}
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button variant='outline' className='flex-1'>
+                  <Button variant='outline' className='flex-1 bg-slate-200'>
                     <UserPlus className='mr-2 h-4 w-4' />
                     Join Group
                   </Button>
@@ -382,6 +338,13 @@ export default function ChatSidebar({
             </div>
             {/* */}
           </div>
+
+          {/* Add friend */}
+          <AddFriendDialog
+            handleAddFriend={handleAddFriend}
+            newFriend={newFriend}
+            setNewFriend={setNewFriend}
+          />
 
           {/* Chat list */}
           <ScrollArea className='flex-1'>

@@ -1,9 +1,9 @@
 'use client'
 
-import { Chat } from '@/types/chat'
+import { Group } from '@/types/group'
 import { Ellipsis } from 'lucide-react'
 
-import { ChatSettingsForm } from '@/components/chat/chat-settings-form'
+import { GroupSettingsForm } from '@/components/group/group-settings-form'
 import {
   Dialog,
   DialogContent,
@@ -14,11 +14,11 @@ import {
 
 import { Button } from '../ui/button'
 
-export interface ChatSettingsProps {
-  chat: Chat
+export interface GroupSettingsProps {
+  group: Group
 }
 
-export function ChatSettings({ chat }: ChatSettingsProps) {
+export function GroupSettings({ group }: GroupSettingsProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -28,8 +28,8 @@ export function ChatSettings({ chat }: ChatSettingsProps) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Chat Settings</DialogTitle>
-          <ChatSettingsForm chat={chat} />
+          <DialogTitle>Group Settings</DialogTitle>
+          <GroupSettingsForm group={group} />
         </DialogHeader>
       </DialogContent>
     </Dialog>

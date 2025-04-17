@@ -1561,8 +1561,6 @@ export interface components {
     }
     'dto.UserResponse': {
       email?: string
-      friends?: components['schemas']['dto.UserResponse'][]
-      groups?: components['schemas']['dto.GroupListResponse'][]
       id?: number
       name?: string
       profilePictureUrl?: string

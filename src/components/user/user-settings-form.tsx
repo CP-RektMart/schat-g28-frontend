@@ -42,7 +42,6 @@ export function UserSettingsForm({ user }: UserSettingsFormProps) {
   const onSubmit = async (data: { displayName: string }) => {
     setIsSaving(true)
     try {
-      // Simulate API call
       const payload = {
         name: data.displayName,
       }

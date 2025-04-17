@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-import type { Chat } from '@/types/chat'
+import type { Group } from '@/types/group'
 import type { Message } from '@/types/message'
 import type { User } from '@/types/user'
 
@@ -10,55 +10,29 @@ import ChatArea from '@/components/chat/chat-area'
 import ChatSidebar from '@/components/chat/chat-sidebar'
 
 export interface ChatPageProps {
+  friends: User[]
   currentUser: User
 }
 
-export default function ChatPageComponent({ currentUser }: ChatPageProps) {
-  const [chats, setChats] = useState<Chat[]>([])
+export type Chat = Group | User
+
+export default function ChatPageComponent({
+  currentUser,
+  friends,
+}: ChatPageProps) {
+  const [chats, setChats] = useState<Group[]>([])
   const [messages, setMessages] = useState<Record<string, Message[]>>({})
-  const [selectedChat, setSelectedChat] = useState<Chat | null>(null)
+  const [selectedChat, setSelectedChat] = useState<Group | null>(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  const handleSelectChat = (chat: Chat) => {
+  const handleSelectChat = (chat: Group) => {
     setSelectedChat(chat)
-    // Mark messages as read
     setChats(chats.map((c) => (c.id === chat.id ? { ...c, unread: 0 } : c)))
     setIsMobileMenuOpen(false)
   }
 
   const handleSendMessage = (text: string) => {
-    if (!selectedChat || !text.trim()) return
-
-    const newMessage: Message = {
-      id: `msg${Date.now()}`,
-      chatId: selectedChat.id,
-      senderId: currentUser.id,
-      text,
-      timestamp: new Date().toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
-      }),
-      isEdited: false,
-    }
-
-    // Update messages
-    setMessages({
-      ...messages,
-      [selectedChat.id]: [...(messages[selectedChat.id] || []), newMessage],
-    })
-
-    // Update chat preview
-    setChats(
-      chats.map((chat) =>
-        chat.id === selectedChat.id
-          ? {
-              ...chat,
-              lastMessage: text,
-              timestamp: 'Just now',
-            }
-          : chat
-      )
-    )
+    console.log(text)
   }
 
   const handleEditMessage = (messageId: string, newText: string) => {
@@ -83,23 +57,14 @@ export default function ChatPageComponent({ currentUser }: ChatPageProps) {
   }
 
   const handleCreateGroup = (name: string, participants: User[]) => {
-    const newChat: Chat = {
-      id: `chat${Date.now()}`,
-      name,
-      isGroup: true,
-      lastMessage: 'Group created',
-      timestamp: 'Just now',
-      profilePictureUrl: '/placeholder.svg?height=40&width=40',
-      unread: 0,
-      participants: [currentUser, ...participants],
-    }
-
     setChats([newChat, ...chats])
     setSelectedChat(newChat)
     setMessages({
       ...messages,
       [newChat.id]: [],
     })
+
+    console.log({ name, participants })
   }
 
   const handleJoinGroup = (groupId: string) => {
@@ -110,6 +75,7 @@ export default function ChatPageComponent({ currentUser }: ChatPageProps) {
   return (
     <div className='flex h-screen bg-gray-50'>
       <ChatSidebar
+        friends={friends}
         chats={chats}
         selectedChat={selectedChat}
         currentUser={currentUser}

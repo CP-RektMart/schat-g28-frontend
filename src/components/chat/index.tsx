@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 
+import { createGroup } from '@/actions/group/create-group'
 import type { Group } from '@/types/group'
 import type { Message } from '@/types/message'
 import type { User } from '@/types/user'
@@ -56,15 +57,29 @@ export default function ChatPageComponent({
     })
   }
 
-  const handleCreateGroup = (name: string, participants: User[]) => {
-    setChats([newChat, ...chats])
-    setSelectedChat(newChat)
-    setMessages({
-      ...messages,
-      [newChat.id]: [],
-    })
+  const handleCreateGroup = async (
+    groupCover: File,
+    name: string,
+    participants: User[]
+  ) => {
+    console.log({ groupCover, name, participants })
+    if (!groupCover || !name || participants.length === 0) {
+      alert('Please fill in all fields')
+      return
+    }
 
-    console.log({ name, participants })
+    const memberIdRecord = participants.map((user) => Number(user.id))
+
+    const payload = {
+      name: name,
+      memberIds: memberIdRecord,
+      groupPicture: groupCover,
+    }
+    try {
+      await createGroup(payload)
+    } catch (err) {
+      console.error('Failed to create group:', err)
+    }
   }
 
   const handleJoinGroup = (groupId: string) => {

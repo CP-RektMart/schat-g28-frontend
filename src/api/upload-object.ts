@@ -35,5 +35,6 @@ export async function uploadObject(req: UploadObjectRequest) {
   }
 
   const data = await response.json()
+
   return uploadObjectResponse.parse(data).result
 }

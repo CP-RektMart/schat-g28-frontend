@@ -43,7 +43,7 @@ interface ChatSidebarProps {
   chats: Chat[]
   selectedChat: Chat | null
   onSelectChat: (chat: Chat) => void
-  onCreateGroup: (name: string, participants: User[]) => void
+  onCreateGroup: (groupCover: File, name: string, participants: User[]) => void
   onJoinGroup: (groupId: string) => void
   currentUser: User
   isMobileMenuOpen: boolean
@@ -89,8 +89,8 @@ export default function ChatSidebar({
     })
 
   const handleCreateGroup = () => {
-    if (newGroupName.trim() && selectedUsers.length > 0) {
-      onCreateGroup(newGroupName, selectedUsers)
+    if (newGroupName.trim() && selectedUsers.length > 0 && photoCards) {
+      onCreateGroup(photoCards.image, newGroupName, selectedUsers)
       setNewGroupName('')
       setSelectedUsers([])
     }
@@ -227,7 +227,7 @@ export default function ChatSidebar({
                 </DialogContent>
               </Dialog>
 
-              {/* group chat */}
+              {/* create group */}
               <Dialog>
                 <DialogTrigger asChild>
                   <Button className='flex-1' variant='primary'>
@@ -335,16 +335,15 @@ export default function ChatSidebar({
                   </div>
                 </DialogContent>
               </Dialog>
-            </div>
-            {/* */}
-          </div>
 
-          {/* Add friend */}
-          <AddFriendDialog
-            handleAddFriend={handleAddFriend}
-            newFriend={newFriend}
-            setNewFriend={setNewFriend}
-          />
+              {/* Add friend */}
+              <AddFriendDialog
+                handleAddFriend={handleAddFriend}
+                newFriend={newFriend}
+                setNewFriend={setNewFriend}
+              />
+            </div>
+          </div>
 
           {/* Chat list */}
           <ScrollArea className='flex-1'>

@@ -1,4 +1,4 @@
-'user server'
+'use server'
 
 import { client } from '@/api/client'
 import { uploadObject } from '@/api/upload-object'
@@ -7,12 +7,12 @@ import { revalidatePath } from 'next/cache'
 export interface CreateGroupActionProps {
   name: string
   memberIds: number[]
-  profilePictureUrl: File
+  groupPicture: File
 }
 
 export async function createGroup(payload: CreateGroupActionProps) {
   const { url } = await uploadObject({
-    file: payload.profilePictureUrl,
+    file: payload.groupPicture,
   })
 
   if (!url) {
@@ -20,15 +20,49 @@ export async function createGroup(payload: CreateGroupActionProps) {
     return
   }
 
-  await client.POST('/api/v1/groups', {
+  const response = await client.POST('/api/v1/groups', {
     body: {
       name: payload.name,
-      profilePictureUrl: url,
-      memberIds: payload.memberIds,
+      members: payload.memberIds,
+      groupPicture: url,
     },
   })
+
+  console.log('response', response)
 
   revalidatePath('/chat')
 
   return
 }
+
+// export async function createGroup(payload: CreateGroupActionProps) {
+//   const session = await auth()
+
+//   const { url } = await uploadObject({
+//     file: payload.groupPicture,
+//   })
+
+//   if (!url) {
+//     console.error('Failed to upload profile picture')
+//     return
+//   }
+
+//   const response = await fetch(`${process.env.BACKEND_URL}/api/v1/groups`, {
+//     method: 'POST',
+//     headers: {
+//       Authorization: `Bearer ${session?.accessToken}`,
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({
+//       name: payload.name,
+//       members: payload.memberIds,
+//       groupPicture: url,
+//     }),
+//   })
+
+//   console.log('response', await response.text())
+
+//   revalidatePath('/chat')
+
+//   return
+// }

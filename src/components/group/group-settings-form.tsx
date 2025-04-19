@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-import { Chat } from '@/types/chat'
+import { Group } from '@/types/group'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -12,8 +12,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-export interface ChatSettingsFormProps {
-  chat: Chat
+export interface GroupSettingsFormProps {
+  group: Group
 }
 
 const schema = z.object({
@@ -23,7 +23,7 @@ const schema = z.object({
     .max(50, 'Display name must be at most 50 characters'),
 })
 
-export function ChatSettingsForm({ chat }: ChatSettingsFormProps) {
+export function GroupSettingsForm({ group }: GroupSettingsFormProps) {
   const [isSaving, setIsSaving] = useState(false)
 
   const {
@@ -33,7 +33,7 @@ export function ChatSettingsForm({ chat }: ChatSettingsFormProps) {
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
-      displayName: chat.name || '',
+      displayName: group.name || '',
     },
   })
 

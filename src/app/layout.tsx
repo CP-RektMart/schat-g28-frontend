@@ -19,7 +19,7 @@ const ibmPlexSansThai = IBM_Plex_Sans_Thai({
 })
 
 export const metadata: Metadata = {
-  title: 'SChatApp',
+  title: 'SChat',
   description: 'Zhooleng & Zheeling',
 }
 

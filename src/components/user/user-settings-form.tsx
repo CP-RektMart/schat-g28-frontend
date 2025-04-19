@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 import { updateMe } from '@/actions/me/update-me'
-import { UserProfile } from '@/types/user'
+import { User } from '@/types/user'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 export interface UserSettingsFormProps {
-  user: UserProfile
+  user: User
 }
 
 const schema = z.object({
@@ -42,7 +42,6 @@ export function UserSettingsForm({ user }: UserSettingsFormProps) {
   const onSubmit = async (data: { displayName: string }) => {
     setIsSaving(true)
     try {
-      // Simulate API call
       const payload = {
         name: data.displayName,
       }
@@ -65,7 +64,7 @@ export function UserSettingsForm({ user }: UserSettingsFormProps) {
       <div className='flex items-center space-x-4'>
         <Avatar className='h-16 w-16'>
           <AvatarImage src={user.profilePictureUrl} alt='User Avatar' />
-          <AvatarFallback>{user.name.slice(0, 1)}</AvatarFallback>
+          <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
         </Avatar>
         <div className='w-full space-y-2'>
           <Label htmlFor='displayName'>Display Name</Label>

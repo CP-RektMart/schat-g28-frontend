@@ -1,4 +1,4 @@
-import { Chat } from '@/types/chat'
+import { Chat } from '@/types/group'
 import { UserProfile as User } from '@/types/user'
 
 export const initialChats: Chat[] = [

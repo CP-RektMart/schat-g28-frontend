@@ -1,3 +1,4 @@
+import { getFriends } from '@/actions/friend/get-friends'
 import { client } from '@/api/client'
 import { redirect } from 'next/navigation'
 
@@ -15,7 +16,9 @@ export default async function ChatPage() {
     return <div></div>
   }
 
+  const friends = await getFriends()
+
   const currentUser = profile.result
 
-  return <ChatPageComponent currentUser={currentUser} />
+  return <ChatPageComponent friends={friends} currentUser={currentUser} />
 }

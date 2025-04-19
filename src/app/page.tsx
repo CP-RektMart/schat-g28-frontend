@@ -7,11 +7,10 @@ import { signIn } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
 
 export default function LoginPage() {
-  // This would be replaced with actual auth logic
   const handleLogin = async (login: boolean) => {
     if (login) await guJaLogin('gjl')
     else await guJaLogin('gjs')
-    // Simulate login and redirect
+
     await signIn('google', {
       redirect: true,
       callbackUrl: '/chat',

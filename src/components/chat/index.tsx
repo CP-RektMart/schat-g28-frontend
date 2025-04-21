@@ -3,8 +3,9 @@
 import { useState } from 'react'
 
 import { createGroup } from '@/actions/group/create-group'
+import useMessage from '@/hooks/useMessage'
 import type { Group } from '@/types/group'
-import type { Message } from '@/types/message'
+import type { DMMessage, GroupMessage, Message } from '@/types/message'
 import type { User } from '@/types/user'
 
 import ChatArea from '@/components/chat/chat-area'
@@ -13,6 +14,7 @@ import ChatSidebar from '@/components/chat/chat-sidebar'
 export interface ChatPageProps {
   friends: User[]
   currentUser: User
+  accessToken: string
 }
 
 export type Chat = Group | User
@@ -20,11 +22,26 @@ export type Chat = Group | User
 export default function ChatPageComponent({
   currentUser,
   friends,
+  accessToken,
 }: ChatPageProps) {
   const [chats, setChats] = useState<Group[]>([])
   const [messages, setMessages] = useState<Record<string, Message[]>>({})
   const [selectedChat, setSelectedChat] = useState<Group | null>(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+  const {} = useMessage({
+    getDMMessage,
+    getGroupMessage,
+    accessToken,
+  })
+
+  function getDMMessage(msg: DMMessage) {
+    console.log(msg)
+  }
+
+  function getGroupMessage(msg: GroupMessage) {
+    console.log(msg)
+  }
 
   const handleSelectChat = (chat: Group) => {
     setSelectedChat(chat)

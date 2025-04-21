@@ -20,15 +20,13 @@ export async function createGroup(payload: CreateGroupActionProps) {
     return
   }
 
-  const response = await client.POST('/api/v1/groups', {
+  await client.POST('/api/v1/groups', {
     body: {
       name: payload.name,
       members: payload.memberIds,
-      groupPicture: url,
+      profilePictureUrl: url,
     },
   })
-
-  console.log('response', response)
 
   revalidatePath('/chat')
 

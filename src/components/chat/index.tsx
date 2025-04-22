@@ -8,6 +8,7 @@ import {
   getGroupMessageHistory,
 } from '@/actions/history/get-history'
 import useMessage from '@/hooks/useMessage'
+import { cn } from '@/lib/utils'
 import type { Group } from '@/types/group'
 import type { ChatMode, DMMessage, GroupMessage } from '@/types/message'
 import type { User } from '@/types/user'
@@ -36,6 +37,7 @@ export default function ChatPageComponent({
   const [selectedGroupID, setSelectedGroupID] = useState(0)
   const [chatMode, setChatMode] = useState<ChatMode>('DM')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [selectedColor, setSelectedColor] = useState('bg-gray-500')
 
   // const [chats, setChats] = useState<Group[]>([])
   // const [messages, setMessages] = useState<Record<string, Message[]>>(undefined)
@@ -92,6 +94,7 @@ export default function ChatPageComponent({
 
   return (
     <div className='flex h-screen bg-gray-50'>
+      <p className={selectedColor}>TEST</p>
       <ChatSidebar
         users={friends}
         groups={groups}
@@ -118,6 +121,8 @@ export default function ChatPageComponent({
         // handleSelectUser={handleSelectTalker}
         // listMode={listMode}
         // setListMode={setListMode}
+        selectedColor={selectedColor}
+        setSelectedColor={setSelectedColor}
       />
       <ChatArea
         setIsMobileMenuOpen={setIsMobileMenuOpen}

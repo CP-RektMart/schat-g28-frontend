@@ -66,6 +66,8 @@ interface ChatSidebarProps {
   // handleSelectUser: (user: User) => void
   // listMode: string
   // setListMode: (mode: string) => void
+  selectedColor: string
+  setSelectedColor: (color: string) => void
 }
 
 export type PhotoCardForm = {
@@ -93,6 +95,8 @@ export default function ChatSidebar({
   // handleSelectUser,
   // listMode,
   // setListMode,
+  selectedColor,
+  setSelectedColor,
 }: ChatSidebarProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [initialMessage, setInitialMessage] = useState('')
@@ -142,7 +146,11 @@ export default function ChatSidebar({
       >
         <div className='flex h-full flex-col'>
           {/* User profile */}
-          <UserProfile myProfile={myProfile} />
+          <UserProfile
+            myProfile={myProfile}
+            selectedColor={selectedColor}
+            setSelectedColor={setSelectedColor}
+          />
 
           {/* Search and actions */}
           <div className='border-b p-4'>

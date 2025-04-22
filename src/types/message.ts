@@ -1,6 +1,6 @@
 export type MessageType = 'ERROR' | 'MESSSAGE' | 'GROUP'
 
-export type ChatMode = 'GROUP' | 'DM';
+export type ChatMode = 'GROUP' | 'DM'
 
 export interface DMMessageRequest {
   content: string
@@ -17,7 +17,7 @@ export interface GroupMessageRequest {
 export interface GroupMessage {
   id: number
   content: string
-  receiverId: number
+  groupId: number
   senderId: number
   sendedAt: string
 }
@@ -25,7 +25,7 @@ export interface GroupMessage {
 export interface DMMessage {
   id: number
   content: string
-  groupId: number
+  receiverId: number
   senderId: number
   senderAt: string
 }

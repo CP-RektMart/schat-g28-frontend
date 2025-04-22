@@ -42,21 +42,41 @@ export default function ChatArea({
   const [user, setUser] = useState<UserDetail>()
   const [group, setGroup] = useState<GroupDetail>()
 
-  const { sendDMMessage } = useMessage({
+  const { sendDMMessage, sendGroupMessage } = useMessage({
     getDMMessage,
     getGroupMessage,
     accessToken,
   })
 
   function getDMMessage(msg: DMMessage) {
-    console.log(msg)
     if (chatMode == 'DM') scrollToBottom()
+    if (msg.senderId == user?.id || msg.receiverId == user?.id) {
+      setUser((u) => {
+        let newMsgs = u?.messages
+        // @ts-ignore
+        newMsgs = [...newMsgs, msg]
+        return { ...u, messages: newMsgs }
+      })
+      scrollToBottom()
+    }
   }
 
   function getGroupMessage(msg: GroupMessage) {
-    console.log(msg)
     if (chatMode == 'GROUP') scrollToBottom()
+    if (msg.groupId == group?.id) {
+      setGroup((g) => {
+        let newMsgs = g?.messages
+        // @ts-ignore
+        newMsgs = [...newMsgs, msg]
+        return { ...g, messages: newMsgs }
+      })
+      scrollToBottom()
+    }
   }
+
+  // useEffect(() => {
+  //   scrollToBottom()
+  // }, [selectedGroupId, selectedUserId])
 
   useEffect(() => {
     ;(async () => {
@@ -67,8 +87,9 @@ export default function ChatArea({
 
   useEffect(() => {
     ;(async () => {
-      const group = await getGroupByID(selectedUserId)
+      const group = await getGroupByID(selectedGroupId)
       setGroup(group)
+      console.log(group)
     })()
   }, [selectedGroupId])
 
@@ -78,7 +99,21 @@ export default function ChatArea({
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault()
-    if (messageText != '') {
+    if (messageText.trim() != '') {
+      if (chatMode == 'DM') {
+        sendDMMessage({
+          content: messageText.trim(),
+          receiverId: user?.id as number,
+          senderId: currentUser.id as number,
+        })
+      } else {
+        sendGroupMessage({
+          content: messageText.trim(),
+          groupId: group?.id as number,
+          senderId: currentUser.id as number,
+        })
+      }
+
       setMessageText('')
     }
   }
@@ -156,68 +191,7 @@ export default function ChatArea({
 
               return (
                 <div
-                  key={message.id}
-                  className={cn(
-                    'flex items-start',
-                    isCurrentUser ? 'flex-row-reverse' : 'flex-row',
-                    isCurrentUser ? 'space-x-2 space-x-reverse' : 'space-x-2'
-                  )}
-                >
-                  <Avatar className='flex-shrink-0'>
-                    <AvatarImage
-                      src={
-                        isCurrentUser
-                          ? currentUser.profilePictureUrl
-                          : sender?.profilePictureUrl
-                      }
-                      alt={sender?.name || 'User'}
-                    />
-                    <AvatarFallback>{sender?.name?.charAt(0)}</AvatarFallback>
-                  </Avatar>
-
-                  <div
-                    className={cn(
-                      'max-w-[70%]',
-                      isCurrentUser
-                        ? 'rounded-l-lg rounded-br-lg bg-gray-900 text-white'
-                        : 'rounded-r-lg rounded-bl-lg bg-gray-200 text-gray-900'
-                    )}
-                  >
-                    <div className='p-3'>
-                      {/* Show sender name in group chat if not current user */}
-                      {chatMode == 'GROUP' && !isCurrentUser && (
-                        <p className='mb-1 text-sm font-semibold text-gray-700'>
-                          {sender?.name || 'Unknown'}
-                        </p>
-                      )}
-                      <p className='whitespace-pre-wrap break-words'>
-                        {message.content}
-                      </p>
-                      <div
-                        className={`mt-1 flex items-center justify-between text-xs ${
-                          isCurrentUser ? 'text-gray-300' : 'text-gray-500'
-                        }`}
-                      >
-                        <span>{message.sendedAt}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
-
-          {chatMode == 'GROUP' &&
-            group?.messages?.map((message) => {
-              const isCurrentUser = message.senderId === currentUser.id
-
-              // Get sender info based on list mode
-              const sender = group?.members?.find(
-                (m) => m.id === message.senderId
-              )
-
-              return (
-                <div
-                  key={message.id}
+                  key={`${user?.name}-${message.sendedAt}`}
                   className={cn(
                     'flex items-start',
                     isCurrentUser ? 'flex-row-reverse' : 'flex-row',
@@ -276,7 +250,7 @@ export default function ChatArea({
 
               return (
                 <div
-                  key={message.id}
+                  key={`${user?.name}-${message.sendedAt}`}
                   className={cn(
                     'flex items-start',
                     isCurrentUser ? 'flex-row-reverse' : 'flex-row',

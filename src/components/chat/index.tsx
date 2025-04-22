@@ -39,6 +39,8 @@ export default function ChatPageComponent({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [selectedColor, setSelectedColor] = useState('bg-gray-500')
 
+  console.log(selectedGroupID);
+
   // const [chats, setChats] = useState<Group[]>([])
   // const [messages, setMessages] = useState<Record<string, Message[]>>(undefined)
 

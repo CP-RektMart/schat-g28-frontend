@@ -40,14 +40,24 @@ export function UserSettingsForm({ user }: UserSettingsFormProps) {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files?.[0]
+    if (!file) return
+
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error('Profile picture must not exceed 2MB')
+      return
+    }
+
+    setIsSaving(true)
     try {
-      setIsSaving(true)
-      if (file) await updateProfilePicture(file)
+      await updateProfilePicture(file)
+      toast.success('Profile picture updated successfully!')
     } catch (error) {
-      toast(
-        'Failed to update profile picture:' +
-          (error instanceof Error ? error.message : 'Unknown error')
-      )
+      const message =
+        error instanceof Error && error.message.includes('Body exceeded 1 MB')
+          ? 'Upload failed: Image exceeds 1MB limit'
+          : 'Failed to update profile picture'
+
+      toast.error(message)
     } finally {
       setIsSaving(false)
     }

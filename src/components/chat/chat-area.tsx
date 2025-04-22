@@ -49,7 +49,6 @@ export default function ChatArea({
   })
 
   function getDMMessage(msg: DMMessage) {
-    console.log(msg)
     if (chatMode == 'DM') scrollToBottom()
     if (msg.senderId == user?.id || msg.receiverId == user?.id) {
       setUser((u) => {
@@ -88,8 +87,9 @@ export default function ChatArea({
 
   useEffect(() => {
     ;(async () => {
-      const group = await getGroupByID(selectedUserId)
+      const group = await getGroupByID(selectedGroupId)
       setGroup(group)
+      console.log(group)
     })()
   }, [selectedGroupId])
 

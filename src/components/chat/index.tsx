@@ -37,6 +37,8 @@ export default function ChatPageComponent({
   const [chatMode, setChatMode] = useState<ChatMode>('DM')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
+  console.log(selectedGroupID);
+
   // const [chats, setChats] = useState<Group[]>([])
   // const [messages, setMessages] = useState<Record<string, Message[]>>(undefined)
 

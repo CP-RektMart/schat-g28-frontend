@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils'
 import type { User } from '@/types/user'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -5,14 +6,14 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 
 export interface ChatFriendListProps {
   friends: User[] | undefined
-  selectedUserId?: number
-  handleSelectUserId: (idx: number) => void
+  selectUsers?: number[]
+  handleSelectUser: (idx: number) => void
 }
 
-export function ChatFriendList({
+export function ChatFriendListGroup({
   friends,
-  selectedUserId,
-  handleSelectUserId,
+  selectUsers,
+  handleSelectUser,
 }: ChatFriendListProps) {
   if (!friends || friends.length === 0) {
     return (
@@ -22,15 +23,16 @@ export function ChatFriendList({
     )
   }
 
-  const selectedUser = friends.find((user) => user.id === selectedUserId)
-
   return (
     <ScrollArea className='h-64 w-full rounded-md border'>
       {friends.map((user) => (
         <div
           key={user.id}
-          className={`flex cursor-pointer items-center justify-between rounded-md p-2 ${selectedUser?.id === user.id ? 'bg-gray-100' : ''}`}
-          onClick={() => handleSelectUserId(user.id as number)}
+          className={cn(
+            'flex cursor-pointer items-center justify-between rounded-md p-2',
+            selectUsers?.includes(user.id as number) ? 'bg-gray-100' : ''
+          )}
+          onClick={() => handleSelectUser(user.id as number)}
         >
           <div className='flex items-center space-x-3'>
             <Avatar className='h-8 w-8'>

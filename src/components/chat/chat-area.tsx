@@ -53,6 +53,7 @@ export default function ChatArea({
     if (msg.senderId == user?.id || msg.receiverId == user?.id) {
       setUser((u) => {
         let newMsgs = u?.messages
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         newMsgs = [...newMsgs, msg]
         return { ...u, messages: newMsgs }
@@ -66,6 +67,7 @@ export default function ChatArea({
     if (msg.groupId == group?.id) {
       setGroup((g) => {
         let newMsgs = g?.messages
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         newMsgs = [...newMsgs, msg]
         return { ...g, messages: newMsgs }

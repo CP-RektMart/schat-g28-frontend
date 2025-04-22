@@ -1,13 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-import { createGroup } from '@/actions/group/create-group'
-import {
-  getDirectMessageHistory,
-  getGroupMessageHistory,
-} from '@/actions/history/get-history'
-import useMessage from '@/hooks/useMessage'
 import type { Group } from '@/types/group'
 import type { ChatMode, DMMessage, GroupMessage } from '@/types/message'
 import type { User } from '@/types/user'
@@ -30,14 +24,14 @@ export default function ChatPageComponent({
   groups,
   accessToken,
 }: ChatPageProps) {
-  const [groupMsgs, setGroupMsgs] = useState<GroupMessage[]>([])
-  const [DMMsgs, setDMMsgs] = useState<DMMessage[]>([])
+  const [groupMsgs] = useState<GroupMessage[]>([])
+  const [DMMsgs] = useState<DMMessage[]>([])
   const [selectedUserID, setSelectedUserID] = useState(0)
   const [selectedGroupID, setSelectedGroupID] = useState(0)
   const [chatMode, setChatMode] = useState<ChatMode>('DM')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  console.log(selectedGroupID);
+  console.log(selectedGroupID)
 
   // const [chats, setChats] = useState<Group[]>([])
   // const [messages, setMessages] = useState<Record<string, Message[]>>(undefined)

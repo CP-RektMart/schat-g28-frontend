@@ -21,6 +21,8 @@ export async function uploadObject(req: UploadObjectRequest) {
   const formData = new FormData()
   formData.append('file', req.file)
 
+  console.log('ending create formData, start sending')
+
   const response = await fetch(`${process.env.BACKEND_URL}/api/v1/files`, {
     method: 'POST',
     headers: {
@@ -28,6 +30,8 @@ export async function uploadObject(req: UploadObjectRequest) {
     },
     body: formData,
   })
+
+  console.log('finish request')
 
   if (!response.ok) {
     const data = await response.json()

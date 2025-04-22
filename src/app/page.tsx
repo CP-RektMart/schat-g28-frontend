@@ -33,25 +33,16 @@ export default function LoginPage() {
             onClick={() => {
               handleLogin(true)
             }}
-            className='flex w-full items-center hover:opacity-90'
-            variant='outline'
-          >
-            <span className='text-xl font-bold'>G</span>
-            <span>Log in with Google</span>
-          </Button>
-          <Button
-            onClick={() => {
-              handleLogin(true)
-            }}
             className='flex w-full items-center justify-center gap-2 bg-gradient-to-r from-red-500 via-yellow-500 to-blue-500 text-white hover:opacity-90'
             variant='outline'
           >
             <span className='text-xl font-bold'>G</span>
-            <span>Sign in with Google</span>
+            <span>Login in with Google</span>
           </Button>
 
           <div className='text-center text-xs text-gray-500'>
-            By signing in, you agree to be gay.
+            Computer Network Final Project <br />
+            Group 28 ทั้งหล่อและก่อกวน
           </div>
         </div>
       </div>

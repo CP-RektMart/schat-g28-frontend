@@ -1588,6 +1588,7 @@ export interface components {
             profilePictureURL?: string;
         };
         "dto.UserResponse": {
+            color?: string;
             email?: string;
             id?: number;
             name?: string;

@@ -39,7 +39,7 @@ export default function ChatPageComponent({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [selectedColor, setSelectedColor] = useState('bg-gray-500')
 
-  console.log(selectedGroupID);
+  console.log(selectedGroupID)
 
   // const [chats, setChats] = useState<Group[]>([])
   // const [messages, setMessages] = useState<Record<string, Message[]>>(undefined)
@@ -96,7 +96,6 @@ export default function ChatPageComponent({
 
   return (
     <div className='flex h-screen bg-gray-50'>
-      <p className={selectedColor}>TEST</p>
       <ChatSidebar
         users={friends}
         groups={groups}
@@ -133,6 +132,7 @@ export default function ChatPageComponent({
         selectedGroupId={selectedGroupID}
         accessToken={accessToken}
         currentUser={currentUser}
+        chatColor={selectedColor}
       />
     </div>
   )

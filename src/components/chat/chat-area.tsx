@@ -27,6 +27,7 @@ interface ChatAreaProps {
   selectedGroupId: number
   accessToken: string
   currentUser: User
+  chatColor: string
 }
 
 export default function ChatArea({
@@ -36,6 +37,7 @@ export default function ChatArea({
   chatMode,
   accessToken,
   currentUser,
+  chatColor,
 }: ChatAreaProps) {
   const [messageText, setMessageText] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -274,7 +276,8 @@ export default function ChatArea({
                       'max-w-[70%]',
                       isCurrentUser
                         ? 'rounded-l-lg rounded-br-lg bg-gray-900 text-white'
-                        : 'rounded-r-lg rounded-bl-lg bg-gray-200 text-gray-900'
+                        : 'rounded-r-lg rounded-bl-lg bg-gray-200 text-gray-900',
+                      isCurrentUser && chatColor
                     )}
                   >
                     <div className='p-3'>
@@ -314,7 +317,11 @@ export default function ChatArea({
             // onKeyDown={handleKeyDown}
             className='flex-1'
           />
-          <Button type='submit' disabled={!messageText.trim()}>
+          <Button
+            type='submit'
+            disabled={!messageText.trim()}
+            className={chatColor}
+          >
             <Send className='h-4 w-4' />
           </Button>
         </form>

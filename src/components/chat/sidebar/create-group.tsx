@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 import { createGroup } from '@/actions/group/create-group'
 import { MAX_FILES, MAX_FILE_SIZE } from '@/config/index'
 import { User } from '@/types/user'
-import { UserPlus, Users } from 'lucide-react'
+import { Users } from 'lucide-react'
 import Image from 'next/image'
 import { useDropzone } from 'react-dropzone'
 
@@ -18,7 +18,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-import { ChatFriendList } from '../chat-friendlist'
+import { ChatFriendListGroup } from '../chat-friendlist-group'
 import { PhotoCardForm } from '../chat-sidebar'
 
 interface props {
@@ -29,7 +29,13 @@ export function CreateGroup({ users }: props) {
   const [photoCards, setPhotoCards] = useState<PhotoCardForm>()
   const [newGroupName, setNewGroupName] = useState('')
   const [selectedUsers, setSelectedUsers] = useState<number[]>([])
-  const [selectUserId, setSelectUserId] = useState<number>(-1)
+
+  const handleSelectUser = (userId: number) => {
+    if (selectedUsers.includes(userId)) {
+      setSelectedUsers(selectedUsers.filter((id) => id !== userId))
+    }
+    setSelectedUsers([...selectedUsers, userId])
+  }
 
   const onCreateGroup = async (
     groupCover: File,
@@ -132,13 +138,10 @@ export function CreateGroup({ users }: props) {
           </div>
           <div className='space-y-2'>
             <Label>Select your friends</Label>
-            <ChatFriendList
+            <ChatFriendListGroup
               friends={users}
-              selectedUserId={selectUserId}
-              handleSelectUserId={(id) => {
-                setSelectUserId(id)
-                setSelectedUsers([...selectedUsers, id])
-              }}
+              selectUsers={selectedUsers}
+              handleSelectUser={handleSelectUser}
             />
           </div>
           <div className='w-full'>

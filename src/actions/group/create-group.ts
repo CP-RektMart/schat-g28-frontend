@@ -23,7 +23,7 @@ export async function createGroup(payload: CreateGroupActionProps) {
   await client.POST('/api/v1/groups', {
     body: {
       name: payload.name,
-      members: payload.memberIds,
+      memberIds: payload.memberIds,
       profilePictureUrl: url,
     },
   })

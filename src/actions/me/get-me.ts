@@ -1,7 +1,6 @@
 'use server'
 
 import { client } from '@/api/client'
-import { redirect } from 'next/navigation'
 
 export async function me() {
   const { response: profileResponse, data: profile } =

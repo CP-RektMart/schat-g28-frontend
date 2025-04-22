@@ -5,7 +5,7 @@ import { auth } from '@/auth'
 import { User } from '@/types/user'
 
 export async function getUsers() {
-  const { data } = await client.GET("/api/v1/users");
+  const { data } = await client.GET('/api/v1/users')
 
   const session = await auth()
 

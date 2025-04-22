@@ -1,5 +1,4 @@
 import { Group } from '@/types/group'
-import type { User } from '@/types/user'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 

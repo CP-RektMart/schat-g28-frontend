@@ -1,42 +1,15 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 
-import { logout } from '@/actions/me/logout'
-import { MAX_FILES, MAX_FILE_SIZE } from '@/config/index'
 import type { Group } from '@/types/group'
 import { ChatMode, DMMessage, GroupMessage } from '@/types/message'
 import type { User } from '@/types/user'
-import {
-  Menu,
-  MessageSquare,
-  MessageSquareMore,
-  MessagesSquare,
-  Search,
-  UserPlus,
-  Users,
-  X,
-} from 'lucide-react'
-import { signOut } from 'next-auth/react'
-import Image from 'next/image'
-import { useDropzone } from 'react-dropzone'
 
-import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Textarea } from '@/components/ui/textarea'
 
 import { UserProfile } from '../user/user-profile'
 import { AnotherChatFriendList } from './another-chat-friendlist'
-import { ChatFriendList } from './chat-friendlist'
 import { ChatGroupList } from './chat-grouplist'
 import { CreateGroup } from './sidebar/create-group'
 import { JoinGroup } from './sidebar/join-group'
@@ -78,8 +51,8 @@ export default function ChatSidebar({
   groups,
   chatMode,
   setChatMode,
-  groupMsgs,
-  dmMsgs,
+  // groupMsgs,
+  // dmMsgs,
   selectedUserID,
   selectedGroupID,
   setSelectedGroupID,
@@ -87,7 +60,7 @@ export default function ChatSidebar({
   // chats,
   // selectedChat,
   // onSelectChat,
-  onJoinGroup,
+  // onJoinGroup,
   myProfile,
   isMobileMenuOpen,
   setIsMobileMenuOpen,
@@ -99,36 +72,8 @@ export default function ChatSidebar({
   setSelectedColor,
 }: ChatSidebarProps) {
   const [searchQuery, setSearchQuery] = useState('')
-  const [initialMessage, setInitialMessage] = useState('')
-
-  const [groupIdToJoin, setGroupIdToJoin] = useState('')
-  const [selectedNewPartner, setSelectNewPartner] = useState<User>({})
-  const [selectedUsers, setSelectedUsers] = useState<User[]>([])
-
-  const selectedUser = users.find((u) => u.id == selectedUserID) as User
-
-  const handleJoinGroup = () => {
-    if (groupIdToJoin.trim()) {
-      onJoinGroup(groupIdToJoin)
-      setGroupIdToJoin('')
-    }
-  }
-
-  const togglePartnerSelection = (user: User) => {
-    if (selectedNewPartner.id === user.id) {
-      setSelectNewPartner({} as User)
-    } else {
-      setSelectNewPartner(user)
-    }
-  }
-
-  const toggleUserSelection = (user: User) => {
-    if (selectedUsers.some((u) => u.id === user.id)) {
-      setSelectedUsers(selectedUsers.filter((u) => u.id !== user.id))
-    } else {
-      setSelectedUsers([...selectedUsers, user])
-    }
-  }
+  // const [initialMessage, setInitialMessage] = useState('')
+  // const selectedUser = users.find((u) => u.id == selectedUserID) as User
 
   return (
     <>
@@ -163,7 +108,7 @@ export default function ChatSidebar({
             <CreateGroup users={users} />
 
             {/* join group */}
-            <JoinGroup user={myProfile} />
+            <JoinGroup />
 
             <SelectChatMode chatMode={chatMode} setChatMode={setChatMode} />
           </div>

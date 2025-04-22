@@ -137,6 +137,7 @@ export function CreateGroup({ users }: props) {
               selectedUserId={selectUserId}
               handleSelectUserId={(id) => {
                 setSelectUserId(id)
+                setSelectedUsers([...selectedUsers, id])
               }}
             />
           </div>

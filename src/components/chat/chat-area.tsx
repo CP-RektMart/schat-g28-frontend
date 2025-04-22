@@ -51,7 +51,7 @@ export default function ChatArea({
   })
 
   function getDMMessage(msg: DMMessage) {
-    if (chatMode == 'DM') scrollToBottom()
+    // if (chatMode == 'DM') scrollToBottom()
     if (msg.senderId == user?.id || msg.receiverId == user?.id) {
       setUser((u) => {
         let newMsgs = u?.messages
@@ -59,12 +59,12 @@ export default function ChatArea({
         newMsgs = [...newMsgs, msg]
         return { ...u, messages: newMsgs }
       })
-      scrollToBottom()
+      // scrollToBottom()
     }
   }
 
   function getGroupMessage(msg: GroupMessage) {
-    if (chatMode == 'GROUP') scrollToBottom()
+    // if (chatMode == 'GROUP') scrollToBottom()
     if (msg.groupId == group?.id) {
       setGroup((g) => {
         let newMsgs = g?.messages
@@ -72,13 +72,14 @@ export default function ChatArea({
         newMsgs = [...newMsgs, msg]
         return { ...g, messages: newMsgs }
       })
-      scrollToBottom()
     }
   }
 
-  // useEffect(() => {
-  //   scrollToBottom()
-  // }, [selectedGroupId, selectedUserId])
+  useEffect(() => {
+    setTimeout(() => {
+      scrollToBottom()
+    }, 100)
+  }, [selectedGroupId, selectedUserId, user, group, chatMode])
 
   useEffect(() => {
     ;(async () => {
@@ -96,7 +97,12 @@ export default function ChatArea({
   }, [selectedGroupId])
 
   const scrollToBottom = () => {
+    console.log('scroll')
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    // messagesEndRef.current?.scrollTo({
+    //   top: messagesEndRef.current.scrollHeight,
+    //   behavior: 'smooth',
+    // })
   }
 
   const handleSendMessage = (e: React.FormEvent) => {
@@ -176,13 +182,17 @@ export default function ChatArea({
             </div>
           </div>
         </div>
-        {chatMode == 'GROUP' && <GroupSettings group={group as GroupDetail} />}
+        {chatMode == 'GROUP' && group?.owner?.id == currentUser?.id && (
+          <GroupSettings group={group as GroupDetail} />
+        )}
       </div>
 
       {/* Messages area */}
       <ScrollArea className='flex-1 p-4'>
         <div className='space-y-4'>
           {chatMode == 'GROUP' &&
+            (group?.owner?.id == currentUser?.id ||
+              group?.members?.find((m) => m.id == currentUser?.id)) &&
             group?.messages?.map((message) => {
               const isCurrentUser = message.senderId === currentUser.id
 
@@ -302,7 +312,6 @@ export default function ChatArea({
                 </div>
               )
             })}
-
           <div ref={messagesEndRef} />
         </div>
       </ScrollArea>

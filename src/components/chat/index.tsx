@@ -30,6 +30,9 @@ export default function ChatPageComponent({
   const [selectedGroupID, setSelectedGroupID] = useState(0)
   const [chatMode, setChatMode] = useState<ChatMode>('DM')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [selectedColor, setSelectedColor] = useState(
+    currentUser.color || 'bg-gray-500'
+  )
 
   console.log(selectedGroupID)
 

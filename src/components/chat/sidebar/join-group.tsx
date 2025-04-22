@@ -1,6 +1,9 @@
 import { useState } from 'react'
 
+import { joinGroup } from '@/actions/group/join-group'
+import { User } from '@/types/user'
 import { UserPlus } from 'lucide-react'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -13,10 +16,21 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-export function JoinGroup() {
+interface props {
+  user: User
+}
+
+export function JoinGroup({ user }: props) {
   const [field, setField] = useState('')
 
-  function handleJoinGroup() {}
+  function handleJoinGroup() {
+    ;(async () => {
+      const resp = await joinGroup(Number(field))
+      if (resp?.error) {
+        toast.error(resp.error)
+      }
+    })()
+  }
 
   return (
     <Dialog>

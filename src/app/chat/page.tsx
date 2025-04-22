@@ -19,6 +19,7 @@ export default async function ChatPage() {
   const groups = await getGroups()
 
   const currentUser = profile.result
+  console.log('currentUser', currentUser)
 
   return (
     <ChatPageComponent

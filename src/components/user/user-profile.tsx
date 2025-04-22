@@ -59,7 +59,7 @@ export function UserProfile({
     try {
       console.log('Updating color:', color)
       await updateMe({ color: color })
-      console.log('Color updated successfully:', color)
+      console.log('Color updated successfully')
     } catch (error) {
       console.error('Error updating color:', error)
     }

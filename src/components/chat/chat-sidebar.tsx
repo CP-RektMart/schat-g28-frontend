@@ -155,7 +155,7 @@ export default function ChatSidebar({
             <CreateGroup users={users} />
 
             {/* join group */}
-            <JoinGroup />
+            <JoinGroup user={myProfile} />
 
             <SelectChatMode chatMode={chatMode} setChatMode={setChatMode} />
           </div>

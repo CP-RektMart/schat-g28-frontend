@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRef } from 'react'
 
 import { updateMe } from '@/actions/me/update-me'
+import { updateProfilePicture } from '@/actions/me/update-profile-pic'
 import { User } from '@/types/user'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Pen } from 'lucide-react'
@@ -35,11 +36,17 @@ export function UserSettingsForm({ user }: UserSettingsFormProps) {
     fileInputRef.current?.click()
   }
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0]
-    if (file) {
-      console.log('Selected file:', file)
-      // TODO: implement file upload logic
+    try {
+      setIsSaving(true)
+      if (file) await updateProfilePicture(file)
+    } catch (err) {
+      console.log('error changing profile: ', err)
+    } finally {
+      setIsSaving(false)
     }
   }
 

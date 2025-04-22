@@ -43,8 +43,11 @@ export function UserSettingsForm({ user }: UserSettingsFormProps) {
     try {
       setIsSaving(true)
       if (file) await updateProfilePicture(file)
-    } catch (err) {
-      console.log('error changing profile: ', err)
+    } catch (error) {
+      toast(
+        'Failed to update profile picture:' +
+          (error instanceof Error ? error.message : 'Unknown error')
+      )
     } finally {
       setIsSaving(false)
     }
@@ -89,8 +92,6 @@ export function UserSettingsForm({ user }: UserSettingsFormProps) {
             <AvatarImage src={user.profilePictureUrl} alt='User Avatar' />
             <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
           </Avatar>
-
-          {/* Upload button */}
           <Button
             type='button'
             variant='ghost'

@@ -114,6 +114,8 @@ export default function ChatPageComponent({
         // handleSelectUser={handleSelectTalker}
         // listMode={listMode}
         // setListMode={setListMode}
+        selectedColor={selectedColor}
+        setSelectedColor={setSelectedColor}
       />
       <ChatArea
         setIsMobileMenuOpen={setIsMobileMenuOpen}
@@ -122,7 +124,10 @@ export default function ChatPageComponent({
         selectedGroupId={selectedGroupID}
         accessToken={accessToken}
         currentUser={currentUser}
+        chatColor={selectedColor}
       />
+      <div>JO</div>
+      {currentUser.color}
     </div>
   )
 }

@@ -47,9 +47,13 @@ export function UserSettingsForm({ user }: UserSettingsFormProps) {
       return
     }
 
+    const extension = file.name.split('.').pop()
+    const safeName = `profile-${Date.now()}.${extension}`
+    const renamedFile = new File([file], safeName, { type: file.type })
+
     setIsSaving(true)
     try {
-      await updateProfilePicture(file)
+      await updateProfilePicture(renamedFile)
       toast.success('Profile picture updated successfully!')
     } catch (error) {
       const message =

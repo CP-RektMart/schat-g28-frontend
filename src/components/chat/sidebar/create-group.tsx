@@ -100,12 +100,13 @@ export function CreateGroup({ users }: props) {
               <div>
                 {photoCards && (
                   <div className='mt-2 flex items-center justify-center space-x-4 pb-4'>
-                    <div className='h-32 w-32 overflow-hidden rounded-full object-cover'>
+                    <div className='h-32 w-32 overflow-hidden rounded-full'>
                       <Image
                         src={URL.createObjectURL(photoCards.image)}
                         alt='Uploaded preview'
                         width={256}
                         height={256}
+                        className='h-full w-full object-cover'
                       />
                     </div>
                   </div>

@@ -77,7 +77,7 @@ export default function ChatArea({
     setTimeout(() => {
       scrollToBottom()
     }, 100)
-  }, [selectedGroupId, selectedUserId, user, group])
+  }, [selectedGroupId, selectedUserId, user, group, chatMode])
 
   useEffect(() => {
     ;(async () => {

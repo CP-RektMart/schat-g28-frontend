@@ -1,10 +1,12 @@
 'use client'
 
 import { useState } from 'react'
+import { useRef } from 'react'
 
 import { updateMe } from '@/actions/me/update-me'
 import { User } from '@/types/user'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Pen } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -26,7 +28,20 @@ const schema = z.object({
 })
 
 export function UserSettingsForm({ user }: UserSettingsFormProps) {
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
   const [isSaving, setIsSaving] = useState(false)
+
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click()
+  }
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      console.log('Selected file:', file)
+      // TODO: implement file upload logic
+    }
+  }
 
   const {
     register,
@@ -62,10 +77,31 @@ export function UserSettingsForm({ user }: UserSettingsFormProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='space-y-4 pt-4'>
       <div className='flex items-center space-x-4'>
-        <Avatar className='h-16 w-16'>
-          <AvatarImage src={user.profilePictureUrl} alt='User Avatar' />
-          <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
-        </Avatar>
+        <div className='relative'>
+          <Avatar className='h-16 w-16'>
+            <AvatarImage src={user.profilePictureUrl} alt='User Avatar' />
+            <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
+          </Avatar>
+
+          {/* Upload button */}
+          <Button
+            type='button'
+            variant='ghost'
+            size='icon'
+            className='absolute bottom-0 right-0 h-6 w-6 rounded-full bg-white p-1 shadow'
+            onClick={handleAvatarClick}
+          >
+            <Pen className='h-4 w-4' />
+          </Button>
+          <Input
+            ref={fileInputRef}
+            type='file'
+            accept='image/*'
+            className='hidden'
+            onChange={handleFileChange}
+          />
+        </div>
+
         <div className='w-full space-y-2'>
           <Label htmlFor='displayName'>Display Name</Label>
           <Input
@@ -80,6 +116,7 @@ export function UserSettingsForm({ user }: UserSettingsFormProps) {
           )}
         </div>
       </div>
+
       <div className='flex justify-end'>
         <Button type='submit' disabled={isSaving}>
           {isSaving ? 'Saving...' : 'Save Changes'}

@@ -180,13 +180,17 @@ export default function ChatArea({
             </div>
           </div>
         </div>
-        {chatMode == 'GROUP' && <GroupSettings group={group as GroupDetail} />}
+        {chatMode == 'GROUP' && group?.owner?.id == currentUser?.id && (
+          <GroupSettings group={group as GroupDetail} />
+        )}
       </div>
 
       {/* Messages area */}
       <ScrollArea className='flex-1 p-4'>
         <div className='space-y-4'>
           {chatMode == 'GROUP' &&
+            (group?.owner?.id == currentUser?.id ||
+              group?.members?.find((m) => m.id == currentUser?.id)) &&
             group?.messages?.map((message) => {
               const isCurrentUser = message.senderId === currentUser.id
 

@@ -40,11 +40,11 @@ export default function useMessage(inpt: UseMessageInput): UseMessageOutput {
     }
   }, [lastMessage])
 
-  function sendDMMessage(msg: DMMessage) {
+  function sendDMMessage(msg: DMMessageRequest) {
     sendMessage(JSON.stringify(msg))
   }
 
-  function sendGroupMessage(msg: GroupMessage) {
+  function sendGroupMessage(msg: GroupMessageRequest) {
     sendMessage(JSON.stringify(msg))
   }
 

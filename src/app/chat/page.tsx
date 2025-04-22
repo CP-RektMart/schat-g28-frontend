@@ -1,24 +1,19 @@
 import { getGroups } from '@/actions/group/get-groups'
 import { getUsers } from '@/actions/user/get-users'
-import { client } from '@/api/client'
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
 
 import ChatPageComponent from '@/components/chat'
+import { me } from '@/actions/me/get-me'
 
 export default async function ChatPage() {
-  const { response: profileResponse, data: profile } =
-    await client.GET('/api/v1/me')
-
-  const session = await auth()
-
-  if (profileResponse.status !== 200) {
-    redirect('/')
-  }
+  const profile = await me();
 
   if (!profile || !profile.result) {
-    return <div></div>
+    redirect("/");
   }
+
+  const session = await auth();
 
   const friends = await getUsers()
   const groups = await getGroups()
@@ -27,8 +22,8 @@ export default async function ChatPage() {
 
   return (
     <ChatPageComponent
-      friends={friends}
-      groups={groups}
+      friends={friends || []}
+      groups={groups || []}
       currentUser={currentUser}
       accessToken={session?.accessToken || ''}
     />

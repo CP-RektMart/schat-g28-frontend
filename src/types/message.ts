@@ -1,5 +1,7 @@
 export type MessageType = 'ERROR' | 'MESSSAGE' | 'GROUP'
 
+export type ChatMode = 'GROUP' | 'DM';
+
 export interface DMMessageRequest {
   content: string
   senderId: number

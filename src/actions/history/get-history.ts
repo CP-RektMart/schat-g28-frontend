@@ -15,13 +15,11 @@ export async function getDirectMessageHistory(userId: number) {
 }
 
 export async function getGroupMessageHistory(groupId: number) {
-  const { data } = await client.GET('/api/v1/groups/{id}', {
+  const { data } = await client.GET('/api/v1/groups/{groupID}', {
     params: {
-      path: { id: groupId },
+      path: { groupID: groupId },
     },
   })
-
-  console.log(data.result)
 
   return data?.result
 }

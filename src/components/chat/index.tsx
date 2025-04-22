@@ -9,7 +9,7 @@ import {
 } from '@/actions/history/get-history'
 import useMessage from '@/hooks/useMessage'
 import type { Group } from '@/types/group'
-import type { DMMessage, GroupMessage, Message } from '@/types/message'
+import type { ChatMode, DMMessage, GroupMessage } from '@/types/message'
 import type { User } from '@/types/user'
 
 import ChatArea from '@/components/chat/chat-area'
@@ -30,122 +30,103 @@ export default function ChatPageComponent({
   groups,
   accessToken,
 }: ChatPageProps) {
-  const [chats, setChats] = useState<Group[]>([])
-  const [messages, setMessages] = useState<Record<string, Message[]>>(undefined)
-  const [selectedChat, setSelectedChat] = useState<Group | null>(null)
+  const [groupMsgs, setGroupMsgs] = useState<GroupMessage[]>([])
+  const [DMMsgs, setDMMsgs] = useState<DMMessage[]>([])
+  const [selectedUserID, setSelectedUserID] = useState(0)
+  const [selectedGroupID, setSelectedGroupID] = useState(0)
+  const [chatMode, setChatMode] = useState<ChatMode>('DM')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [selectedTalker, setSelectedTalker] = useState<User | Group>(null)
-  const [listMode, setListMode] = useState<'friends' | 'groups' | undefined>(
-    undefined
-  )
 
-  useEffect(() => {
-    if (!selectedTalker || !selectedTalker.id) return
-    ;(async () => {
-      let data
+  // const [chats, setChats] = useState<Group[]>([])
+  // const [messages, setMessages] = useState<Record<string, Message[]>>(undefined)
 
-      if (listMode === 'friends') {
-        data = await getDirectMessageHistory(selectedTalker.id)
-      } else if (listMode === 'groups') {
-        data = await getGroupMessageHistory(selectedTalker.id)
-      }
+  // useEffect(() => {
+  //   ;(async () => {
+  //     if (chatMode == 'GROUP') {
+  //       setGroupMsgs(
+  //         (await getGroupMessageHistory(selectedGroupID)) as GroupMessage[]
+  //       )
+  //     } else {
+  //       setDMMsgs(
+  //         (await getDirectMessageHistory(selectedUserID)) as DMMessage[]
+  //       )
+  //     }
+  //   })()
+  // }, [selectedUserID, selectedGroupID])
 
-      setSelectedChat(data)
-      setMessages(data.messages)
-    })()
-  }, [selectedTalker?.id])
+  // useEffect(() => {
+  //   if (!selectedTalker || !selectedTalker.id) return
+  //   ;(async () => {
+  //     let data
 
-  const handleSelectTalker = (talker: User | Group) => {
-    setSelectedTalker(talker)
-  }
+  //     if (listMode === 'friends') {
+  //       data = await getDirectMessageHistory(selectedTalker.id || 0)
+  //     } else if (listMode === 'groups') {
+  //       data = await getGroupMessageHistory(selectedTalker.id || 0)
+  //     }
 
-  const { sendDMMessage } = useMessage({
-    getDMMessage,
-    getGroupMessage,
-    accessToken,
-  })
+  //     setSelectedChat(data)
+  //     setMessages(data.messages)
+  //   })()
+  // }, [selectedTalker?.id])
 
-  function getDMMessage(msg: DMMessage) {
-    console.log(msg)
-  }
-
-  function getGroupMessage(msg: GroupMessage) {
-    console.log(msg)
-  }
-
-  const handleSelectChat = (chat: Group) => {
-    setSelectedChat(chat)
-    setChats(chats.map((c) => (c.id === chat.id ? { ...c, unread: 0 } : c)))
-    setIsMobileMenuOpen(false)
-  }
-
-  const handleCreateGroup = async (
-    groupCover: File,
-    name: string,
-    participants: User[]
-  ) => {
-    console.log({ groupCover, name, participants })
-    if (!groupCover || !name || participants.length === 0) {
-      alert('Please fill in all fields')
-      return
-    }
-
-    const memberIdRecord = participants.map((user) => Number(user.id))
-
-    const payload = {
-      name: name,
-      memberIds: memberIdRecord,
-      groupPicture: groupCover,
-    }
-    try {
-      await createGroup(payload)
-    } catch (err) {
-      console.error('Failed to create group:', err)
-    }
-  }
+  // const handleSelectChat = (chat: Group) => {
+  //   setSelectedChat(chat)
+  //   setChats(chats.map((c) => (c.id === chat.id ? { ...c, unread: 0 } : c)))
+  //   setIsMobileMenuOpen(false)
+  // }
 
   const handleJoinGroup = (groupId: string) => {
     // In a real app, this would verify the group exists and add the user
     alert(`Joined group with ID: ${groupId}`)
   }
 
-  const handleUpdateMessages = (newMessage: Message) => {
-    setMessages((prevMessages) => {
-      console.log('prevMessages', prevMessages)
-      console.log('newMessage', newMessage)
+  // const handleUpdateMessages = (newMessage: Message) => {
+  //   setMessages((prevMessages) => {
+  //     console.log('prevMessages', prevMessages)
+  //     console.log('newMessage', newMessage)
 
-      return [...prevMessages, newMessage]
-    })
-  }
+  //     return [...prevMessages, newMessage]
+  //   })
+  // }
 
   return (
     <div className='flex h-screen bg-gray-50'>
       <ChatSidebar
-        friends={friends}
+        users={friends}
         groups={groups}
-        chats={chats}
-        selectedChat={selectedChat}
-        currentUser={currentUser}
+        chatMode={chatMode}
+        setChatMode={setChatMode}
+        groupMsgs={groupMsgs}
+        dmMsgs={DMMsgs}
+        selectedUserID={selectedUserID}
+        selectedGroupID={selectedGroupID}
+        setSelectedGroupID={setSelectedGroupID}
+        setSelectedUserID={setSelectedUserID}
+        // chats,
+        // selectedChat,
+        // onSelectChat,
+        myProfile={currentUser}
+        // selectedUser,
+        // handleSelectUser={() => {}}
+        // currentUser={currentUser}
         isMobileMenuOpen={isMobileMenuOpen}
         onJoinGroup={handleJoinGroup}
-        onSelectChat={handleSelectChat}
-        onCreateGroup={handleCreateGroup}
+        // onSelectChat={handleSelectChat}
         setIsMobileMenuOpen={setIsMobileMenuOpen}
-        selectedUser={selectedTalker}
-        handleSelectUser={handleSelectTalker}
-        listMode={listMode}
-        setListMode={setListMode}
+        // selectedUser={selectedTalker}
+        // handleSelectUser={handleSelectTalker}
+        // listMode={listMode}
+        // setListMode={setListMode}
       />
       <ChatArea
-        chat={selectedChat}
-        messages={messages}
-        onUpdateMessages={handleUpdateMessages}
-        currentUser={currentUser}
-        onSendMessage={sendDMMessage}
         setIsMobileMenuOpen={setIsMobileMenuOpen}
-        listMode={listMode}
+        chatMode={chatMode}
+        selectedUserId={selectedUserID}
+        selectedGroupId={selectedGroupID}
+        accessToken={accessToken}
+        currentUser={currentUser}
       />
-      {/* {JSON.stringify(groups)} */}
     </div>
   )
 }

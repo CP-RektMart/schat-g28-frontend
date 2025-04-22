@@ -8,3 +8,4 @@ export type UserProfile = {
 }
 
 export type User = components['schemas']['dto.UserResponse']
+export type UserDetail = components['schemas']['dto.UserDetailResponse']

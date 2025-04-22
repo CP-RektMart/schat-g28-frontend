@@ -1,6 +1,6 @@
 'use client'
 
-import { Group } from '@/types/group'
+import { GroupDetail } from '@/types/group'
 import { Ellipsis } from 'lucide-react'
 
 import { GroupSettingsForm } from '@/components/group/group-settings-form'
@@ -15,7 +15,7 @@ import {
 import { Button } from '../ui/button'
 
 export interface GroupSettingsProps {
-  group: Group
+  group: GroupDetail
 }
 
 export function GroupSettings({ group }: GroupSettingsProps) {

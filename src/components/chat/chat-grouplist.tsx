@@ -4,15 +4,15 @@ import type { User } from '@/types/user'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 export interface ChatGroupListProps {
-  groups: Group[] | undefined
-  selectedUser?: User
-  handleSelectUsers: (user: User) => void
+  groups: Group[]
+  selectGroupId: number
+  setSelectedGroupId: (id: number) => void
 }
 
 export function ChatGroupList({
   groups,
-  selectedUser,
-  handleSelectUsers,
+  selectGroupId,
+  setSelectedGroupId,
 }: ChatGroupListProps) {
   if (!groups || groups.length === 0) {
     return (
@@ -22,17 +22,19 @@ export function ChatGroupList({
     )
   }
 
+  const selectedGroup = groups.find((group) => group.id === selectGroupId)
+
   return (
     <>
       {groups.map((gr) => (
         <div
           key={gr.id}
-          className={`flex cursor-pointer items-center justify-between rounded-md p-2 ${selectedUser?.id === gr.id ? 'bg-gray-100' : ''}`}
-          onClick={() => handleSelectUsers(gr)}
+          className={`flex cursor-pointer items-center justify-between rounded-md p-2 ${selectedGroup?.id === gr.id ? 'bg-gray-100' : ''}`}
+          onClick={() => setSelectedGroupId(gr.id as number)}
         >
           <div className='flex items-center space-x-3'>
             <Avatar className='h-8 w-8'>
-              <AvatarImage src={gr.profilePictureUrl} alt={gr.name} />
+              <AvatarImage src={gr.profilePictureURL} alt={gr.name} />
               <AvatarFallback>{gr.name?.charAt(0)}</AvatarFallback>
             </Avatar>
             <div>

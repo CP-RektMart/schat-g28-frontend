@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-import { Group } from '@/types/group'
+import { Group, GroupDetail } from '@/types/group'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 export interface GroupSettingsFormProps {
-  group: Group
+  group: GroupDetail
 }
 
 const schema = z.object({

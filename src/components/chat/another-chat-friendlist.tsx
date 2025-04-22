@@ -3,15 +3,15 @@ import type { User } from '@/types/user'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 export interface ChatFriendListProps {
-  friends: User[] | undefined
-  selectedUser?: User
-  handleSelectUsers: (user: User) => void
+  friends: User[]
+  selectedUserId: number
+  handleSelectUserId: (id: number) => void
 }
 
 export function AnotherChatFriendList({
   friends,
-  selectedUser,
-  handleSelectUsers,
+  selectedUserId,
+  handleSelectUserId,
 }: ChatFriendListProps) {
   if (!friends || friends.length === 0) {
     return (
@@ -21,13 +21,15 @@ export function AnotherChatFriendList({
     )
   }
 
+  const selectedUser = friends.find((user) => user.id === selectedUserId)
+
   return (
     <>
       {friends.map((user) => (
         <div
           key={user.id}
           className={`flex cursor-pointer items-center justify-between rounded-md p-2 ${selectedUser?.id === user.id ? 'bg-gray-100' : ''}`}
-          onClick={() => handleSelectUsers(user)}
+          onClick={() => handleSelectUserId(user.id || -1)}
         >
           <div className='flex items-center space-x-3'>
             <Avatar className='h-8 w-8'>

@@ -8,7 +8,7 @@ export interface ChatFriendListProps {
   handleSelectUsers: (user: User) => void
 }
 
-export function ChatFriendList({
+export function AnotherChatFriendList({
   friends,
   selectedUser,
   handleSelectUsers,
@@ -39,8 +39,37 @@ export function ChatFriendList({
               <p className='text-xs text-gray-500'>{user.email}</p>
             </div>
           </div>
+          {/* {selectedUsers?.some((u) => u.id === user.id) && (
+            <div className='rm >ounded-full h-4 w-4 bg-gray-900'></div>
+          )} */}
         </div>
       ))}
     </>
   )
+
+  //   ;<div className='max-h-60 space-y-2 overflow-y-auto rounded-md p-2'>
+  //     {friends.map((user) => (
+  //       <div
+  //         key={user.id}
+  //         className={`flex cursor-pointer items-center justify-between rounded-md p-2 ${
+  //           selectedUsers?.some((u) => u.id === user.id) ? 'bg-gray-100' : ''
+  //         }`}
+  //         onClick={() => handleSelectUsers(user)}
+  //       >
+  //         <div className='flex items-center space-x-3'>
+  //           <Avatar className='h-8 w-8'>
+  //             <AvatarImage src={user.profilePictureUrl} alt={user.name} />
+  //             <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
+  //           </Avatar>
+  //           <div>
+  //             <p className='text-sm font-medium'>{user.name}</p>
+  //             <p className='text-xs text-gray-500'>{user.email}</p>
+  //           </div>
+  //         </div>
+  //         {selectedUsers?.some((u) => u.id === user.id) && (
+  //           <div className='rm >ounded-full h-4 w-4 bg-gray-900'></div>
+  //         )}
+  //       </div>
+  //     ))}
+  //   </div>
 }

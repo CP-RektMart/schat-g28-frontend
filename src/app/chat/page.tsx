@@ -1,4 +1,5 @@
-import { getFriends } from '@/actions/friend/get-friends'
+import { getGroups } from '@/actions/group/get-groups'
+import { getUsers } from '@/actions/user/get-users'
 import { client } from '@/api/client'
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
@@ -19,13 +20,15 @@ export default async function ChatPage() {
     return <div></div>
   }
 
-  const friends = await getFriends()
+  const friends = await getUsers()
+  const groups = await getGroups()
 
   const currentUser = profile.result
 
   return (
     <ChatPageComponent
       friends={friends}
+      groups={groups}
       currentUser={currentUser}
       accessToken={session?.accessToken || ''}
     />

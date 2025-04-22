@@ -1,7 +1,12 @@
 import { useEffect } from 'react'
 
 import { envClientSchema } from '@/config/clientEnvSchema'
-import { DMMessage, GroupMessage } from '@/types/message'
+import {
+  DMMessage,
+  DMMessageRequest,
+  GroupMessage,
+  GroupMessageRequest,
+} from '@/types/message'
 import useWebSocket from 'react-use-websocket'
 
 import { parseMessage } from './parse'
@@ -13,8 +18,8 @@ interface UseMessageInput {
 }
 
 interface UseMessageOutput {
-  sendDMMessage: (msg: DMMessage) => void
-  sendGroupMessage: (msg: GroupMessage) => void
+  sendDMMessage: (msg: DMMessageRequest) => void
+  sendGroupMessage: (msg: GroupMessageRequest) => void
 }
 
 export default function useMessage(inpt: UseMessageInput): UseMessageOutput {

@@ -2,14 +2,15 @@
 
 import { useCallback, useState } from 'react'
 
-import { addFriend } from '@/actions/friend/add-friend'
 import { logout } from '@/actions/me/logout'
 import { MAX_FILES, MAX_FILE_SIZE } from '@/config/index'
-import type { Chat } from '@/types/group'
+import type { Group } from '@/types/group'
 import type { User } from '@/types/user'
 import {
   Menu,
+  MessageSquare,
   MessageSquareMore,
+  MessagesSquare,
   Search,
   UserPlus,
   Users,
@@ -19,8 +20,6 @@ import { signOut } from 'next-auth/react'
 import Image from 'next/image'
 import { useDropzone } from 'react-dropzone'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -34,12 +33,14 @@ import { Label } from '@/components/ui/label'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Textarea } from '@/components/ui/textarea'
 
-import { AddFriendDialog } from '../friend/friend-add'
 import { UserProfile } from '../user/user-profile'
+import { AnotherChatFriendList } from './another-chat-friendlist'
 import { ChatFriendList } from './chat-friendlist'
+import { ChatGroupList } from './chat-grouplist'
 
 interface ChatSidebarProps {
   friends: User[]
+  groups: Group[]
   chats: Chat[]
   selectedChat: Chat | null
   onSelectChat: (chat: Chat) => void
@@ -48,6 +49,10 @@ interface ChatSidebarProps {
   currentUser: User
   isMobileMenuOpen: boolean
   setIsMobileMenuOpen: (open: boolean) => void
+  selectedUser: User | null
+  handleSelectUser: (user: User) => void
+  listMode: string
+  setListMode: (mode: string) => void
 }
 
 export type PhotoCardForm = {
@@ -55,19 +60,23 @@ export type PhotoCardForm = {
 }
 export default function ChatSidebar({
   friends,
-  chats,
-  selectedChat,
-  onSelectChat,
+  groups,
+  // chats,
+  // selectedChat,
+  // onSelectChat,
   onCreateGroup,
   onJoinGroup,
   currentUser,
   isMobileMenuOpen,
   setIsMobileMenuOpen,
+  selectedUser,
+  handleSelectUser,
+  listMode,
+  setListMode,
 }: ChatSidebarProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [initialMessage, setInitialMessage] = useState('')
   const [newGroupName, setNewGroupName] = useState('')
-  const [newFriend, setNewFriend] = useState('')
   const [groupIdToJoin, setGroupIdToJoin] = useState('')
   const [selectedNewPartner, setSelectNewPartner] = useState<User>({})
   const [selectedUsers, setSelectedUsers] = useState<User[]>([])
@@ -103,17 +112,6 @@ export default function ChatSidebar({
     }
   }
 
-  const handleAddFriend = async () => {
-    if (newFriend.trim()) {
-      const payload = {
-        userId: parseInt(newFriend),
-      }
-
-      await addFriend(payload)
-      setNewFriend('')
-    }
-  }
-
   const togglePartnerSelection = (user: User) => {
     if (selectedNewPartner.id === user.id) {
       setSelectNewPartner({} as User)
@@ -130,9 +128,13 @@ export default function ChatSidebar({
     }
   }
 
-  const filteredChats = chats.filter((chat) =>
-    chat.name.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  const handleClickPrivateChat = () => {
+    setListMode('friends')
+  }
+
+  const handleClickGroupChat = () => {
+    setListMode('groups')
+  }
 
   const handleLogout = async () => {
     const result = await logout()
@@ -335,68 +337,41 @@ export default function ChatSidebar({
                   </div>
                 </DialogContent>
               </Dialog>
-
-              {/* Add friend */}
-              <AddFriendDialog
-                handleAddFriend={handleAddFriend}
-                newFriend={newFriend}
-                setNewFriend={setNewFriend}
-              />
+              <Button
+                variant='outline'
+                className='w-full bg-slate-200'
+                onClick={handleClickPrivateChat}
+              >
+                <MessageSquare className='mr-2 h-4 w-4' />
+                Private chats
+              </Button>
+              <Button
+                variant='outline'
+                className='w-full bg-slate-200'
+                onClick={handleClickGroupChat}
+              >
+                <MessagesSquare className='mr-2 h-4 w-4' />
+                Group chats
+              </Button>
             </div>
           </div>
 
           {/* Chat list */}
           <ScrollArea className='flex-1'>
-            <div className='space-y-1 p-2'>
-              {filteredChats.length > 0 ? (
-                filteredChats.map((chat) => (
-                  <div
-                    key={chat.id}
-                    className={`flex cursor-pointer items-center justify-between rounded-md p-3 ${
-                      selectedChat?.id === chat.id
-                        ? 'bg-gray-100'
-                        : 'hover:bg-gray-50'
-                    }`}
-                    onClick={() => onSelectChat(chat)}
-                  >
-                    <div className='flex items-center space-x-3'>
-                      <Avatar>
-                        <AvatarImage
-                          src={chat.profilePictureUrl}
-                          alt={chat.name}
-                        />
-                        <AvatarFallback>{chat.name.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className='flex items-center'>
-                          <h3 className='font-medium'>{chat.name}</h3>
-                          {chat.isGroup && (
-                            <span className='ml-1 text-xs'>
-                              ({chat.participants.length})
-                            </span>
-                          )}
-                        </div>
-                        <p className='line-clamp-1 text-sm text-gray-500'>
-                          {chat.lastMessage}
-                        </p>
-                      </div>
-                    </div>
-                    <div className='flex flex-col items-end space-y-1'>
-                      <span className='text-xs text-gray-500'>
-                        {chat.timestamp}
-                      </span>
-                      {chat.unread > 0 && (
-                        <Badge className='flex h-5 w-5 items-center justify-center rounded-full p-0'>
-                          {chat.unread}
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className='p-4 text-center text-gray-500'>
-                  No conversations found
-                </div>
+            <div className='space-y-1 p-3'>
+              {listMode === 'friends' && (
+                <AnotherChatFriendList
+                  friends={friends}
+                  selectedUser={selectedUser || undefined}
+                  handleSelectUsers={handleSelectUser}
+                />
+              )}
+              {listMode === 'groups' && (
+                <ChatGroupList
+                  groups={groups}
+                  selectedUser={selectedUser || undefined}
+                  handleSelectUsers={handleSelectUser}
+                />
               )}
             </div>
           </ScrollArea>

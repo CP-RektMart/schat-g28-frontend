@@ -58,7 +58,7 @@ export default function ChatSidebar({
   // chats,
   // selectedChat,
   // onSelectChat,
-  onJoinGroup,
+  // onJoinGroup,
   myProfile,
   isMobileMenuOpen,
   setIsMobileMenuOpen,
@@ -69,35 +69,7 @@ export default function ChatSidebar({
 }: ChatSidebarProps) {
   const [searchQuery, setSearchQuery] = useState('')
   // const [initialMessage, setInitialMessage] = useState('')
-
-  const [groupIdToJoin, setGroupIdToJoin] = useState('')
-  const [selectedNewPartner, setSelectNewPartner] = useState<User>({})
-  const [selectedUsers, setSelectedUsers] = useState<User[]>([])
-
   // const selectedUser = users.find((u) => u.id == selectedUserID) as User
-
-  const handleJoinGroup = () => {
-    if (groupIdToJoin.trim()) {
-      onJoinGroup(groupIdToJoin)
-      setGroupIdToJoin('')
-    }
-  }
-
-  const togglePartnerSelection = (user: User) => {
-    if (selectedNewPartner.id === user.id) {
-      setSelectNewPartner({} as User)
-    } else {
-      setSelectNewPartner(user)
-    }
-  }
-
-  const toggleUserSelection = (user: User) => {
-    if (selectedUsers.some((u) => u.id === user.id)) {
-      setSelectedUsers(selectedUsers.filter((u) => u.id !== user.id))
-    } else {
-      setSelectedUsers([...selectedUsers, user])
-    }
-  }
 
   return (
     <>
@@ -128,7 +100,7 @@ export default function ChatSidebar({
             <CreateGroup users={users} />
 
             {/* join group */}
-            <JoinGroup user={myProfile} />
+            <JoinGroup />
 
             <SelectChatMode chatMode={chatMode} setChatMode={setChatMode} />
           </div>

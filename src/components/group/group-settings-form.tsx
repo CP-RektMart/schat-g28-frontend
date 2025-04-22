@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-import { Group, GroupDetail } from '@/types/group'
+import { GroupDetail } from '@/types/group'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'

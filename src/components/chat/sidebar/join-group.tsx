@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 import { joinGroup } from '@/actions/group/join-group'
-import { User } from '@/types/user'
 import { UserPlus } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -16,11 +15,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-interface props {
-  user: User
-}
-
-export function JoinGroup({ user }: props) {
+export function JoinGroup() {
   const [field, setField] = useState('')
 
   function handleJoinGroup() {

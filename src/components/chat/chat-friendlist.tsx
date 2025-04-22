@@ -25,7 +25,7 @@ export function ChatFriendList({
   const selectedUser = friends.find((user) => user.id === selectedUserId)
 
   return (
-    <ScrollArea className='h-64 w-full border rounded-md'>
+    <ScrollArea className='h-64 w-full rounded-md border'>
       {friends.map((user) => (
         <div
           key={user.id}

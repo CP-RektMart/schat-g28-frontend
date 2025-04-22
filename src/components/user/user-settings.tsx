@@ -29,7 +29,7 @@ export function UserSettings({ user }: UserSettingsProps) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>User Settings</DialogTitle>
-          <UserSettingsForm user={user} chatColor='Gray' />
+          <UserSettingsForm user={user} />
         </DialogHeader>
       </DialogContent>
     </Dialog>

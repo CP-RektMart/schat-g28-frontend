@@ -1,9 +1,10 @@
-import type { User } from '@/types/user'
+import type { User, UserProfile } from '@/types/user'
 
+import OnlineStatus from '@/components/chat/online-indecator'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 export interface ChatFriendListProps {
-  friends: User[]
+  friends: UserProfile[]
   selectedUserId: number
   handleSelectUserId: (id: number) => void
 }
@@ -32,10 +33,16 @@ export function AnotherChatFriendList({
           onClick={() => handleSelectUserId(user.id || -1)}
         >
           <div className='flex items-center space-x-3'>
-            <Avatar className='h-8 w-8'>
-              <AvatarImage src={user.profilePictureUrl} alt={user.name} />
-              <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
-            </Avatar>
+            <div className='relative'>
+              <Avatar className='h-8 w-8'>
+                <AvatarImage src={user.profilePictureUrl} alt={user.name} />
+                <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <OnlineStatus
+                isOnline={user.isOnline}
+                className='absolute bottom-0 right-0'
+              />
+            </div>
             <div>
               <p className='text-sm font-medium'>{user.name}</p>
               <p className='text-xs text-gray-500'>{user.email}</p>

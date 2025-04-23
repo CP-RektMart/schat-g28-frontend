@@ -5,6 +5,7 @@ export type UserProfile = {
   name: string
   email: string
   profilePictureUrl: string
+  isOnline?: boolean
 }
 
 export type User = components['schemas']['dto.UserResponse']

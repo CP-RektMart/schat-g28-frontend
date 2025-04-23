@@ -1,16 +1,17 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
+import { getUsers } from '@/actions/user/get-users'
+import { getUsersActive } from '@/actions/user/get-users-active'
 import type { Group } from '@/types/group'
 import type { ChatMode, DMMessage, GroupMessage } from '@/types/message'
-import type { User } from '@/types/user'
+import { type User, UserProfile } from '@/types/user'
 
 import ChatArea from '@/components/chat/chat-area'
 import ChatSidebar from '@/components/chat/chat-sidebar'
 
 export interface ChatPageProps {
-  friends: User[]
   groups: Group[]
   currentUser: User
   accessToken: string
@@ -20,7 +21,6 @@ export type Chat = Group | User
 
 export default function ChatPageComponent({
   currentUser,
-  friends,
   groups,
   accessToken,
 }: ChatPageProps) {
@@ -33,7 +33,22 @@ export default function ChatPageComponent({
   const [selectedColor, setSelectedColor] = useState(
     currentUser.color || 'bg-gray-500'
   )
+  const [friends, setFriends] = useState<UserProfile[]>([])
+  useEffect(() => {
+    getUsers().then((data) => {
+      setFriends(data as UserProfile[])
+    })
+  }, [])
 
+  useEffect(() => {
+    setInterval(() => {
+      getUsersActive().then((data) => {
+        setFriends((prev) =>
+          prev.map((p) => ({ ...p, isOnline: data?.some((e) => e.id == p.id) }))
+        )
+      })
+    }, 1000)
+  })
   console.log(selectedGroupID)
 
   // const [chats, setChats] = useState<Group[]>([])

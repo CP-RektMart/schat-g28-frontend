@@ -15,7 +15,6 @@ export default async function ChatPage() {
 
   const session = await auth()
 
-  const friends = await getUsers()
   const groups = await getGroups()
 
   const currentUser = profile.result
@@ -23,7 +22,6 @@ export default async function ChatPage() {
 
   return (
     <ChatPageComponent
-      friends={friends || []}
       groups={groups || []}
       currentUser={currentUser}
       accessToken={session?.accessToken || ''}

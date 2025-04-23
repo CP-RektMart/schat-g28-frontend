@@ -10,7 +10,7 @@ export default function listMember({ members }: { members: User[] }) {
       {members.map((member) => (
         <div key={member.id}>
           <div key={member.id}>{member.name}</div>
-          <div className='last:hidden'>•</div>
+          <div className='last:hidden'>-</div>
         </div>
       ))}
     </div>

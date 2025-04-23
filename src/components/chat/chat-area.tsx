@@ -49,6 +49,7 @@ export default function ChatArea({
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const [user, setUser] = useState<UserDetail>()
   const [group, setGroup] = useState<GroupDetail>()
+  const [openListMembers, setOpenListMembers] = useState(false)
 
   const { sendDMMessage, sendGroupMessage } = useMessage({
     getDMMessage,
@@ -186,7 +187,12 @@ export default function ChatArea({
                 // <Badge variant='outline' className='ml-2 bg-gray-100 text-xs'>
                 //   Group • {group?.members?.length} members
                 // </Badge>
-                <ListMember members={group?.members || []} />
+                <ListMember
+                  members={group?.members || []}
+                  popoverOpen={openListMembers}
+                  setPopOverOpen={setOpenListMembers}
+                  chatColor={chatColor}
+                />
               )}
               {/* {
                 if (chatMode == 'GROUP') {
@@ -221,8 +227,6 @@ export default function ChatArea({
               const sender = group?.members?.find(
                 (m) => m.id === message.senderId
               )
-
-              console.log(group?.members)
 
               return (
                 <div

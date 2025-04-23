@@ -47,8 +47,8 @@ export default function ChatPageComponent({
           prev.map((p) => ({ ...p, isOnline: data?.some((e) => e.id == p.id) }))
         )
       })
-    }, 1000)
-  })
+    }, 3000)
+  }, [])
   console.log(selectedGroupID)
 
   // const [chats, setChats] = useState<Group[]>([])

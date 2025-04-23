@@ -1,6 +1,5 @@
 import { getGroups } from '@/actions/group/get-groups'
 import { me } from '@/actions/me/get-me'
-import { getUsers } from '@/actions/user/get-users'
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
 

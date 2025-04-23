@@ -1,4 +1,4 @@
-import type { User, UserProfile } from '@/types/user'
+import type { UserProfile } from '@/types/user'
 
 import OnlineStatus from '@/components/chat/online-indecator'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -39,7 +39,7 @@ export function AnotherChatFriendList({
                 <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
               </Avatar>
               <OnlineStatus
-                isOnline={user.isOnline}
+                isOnline={user.isOnline || false}
                 className='absolute bottom-0 right-0'
               />
             </div>

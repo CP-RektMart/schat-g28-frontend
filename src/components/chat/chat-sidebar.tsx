@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import type { Group } from '@/types/group'
 import { ChatMode, DMMessage, GroupMessage } from '@/types/message'
-import type { User } from '@/types/user'
+import type { UserProfile as UP, User } from '@/types/user'
 
 import { ScrollArea } from '@/components/ui/scroll-area'
 
@@ -117,7 +117,7 @@ export default function ChatSidebar({
             <div className='space-y-1 p-3'>
               {chatMode == 'DM' && (
                 <AnotherChatFriendList
-                  friends={users}
+                  friends={users as UP[]}
                   selectedUserId={selectedUserID}
                   handleSelectUserId={setSelectedUserID}
                 />

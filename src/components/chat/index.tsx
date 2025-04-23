@@ -129,7 +129,6 @@ export default function ChatPageComponent({
         currentUser={currentUser}
         chatColor={selectedColor}
       />
-      <div>JO</div>
       {currentUser.color}
     </div>
   )

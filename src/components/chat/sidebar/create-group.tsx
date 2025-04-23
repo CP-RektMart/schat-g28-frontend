@@ -6,6 +6,7 @@ import { User } from '@/types/user'
 import { Users } from 'lucide-react'
 import Image from 'next/image'
 import { useDropzone } from 'react-dropzone'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -22,10 +23,11 @@ import { ChatFriendListGroup } from '../chat-friendlist-group'
 import { PhotoCardForm } from '../chat-sidebar'
 
 interface props {
+  currentUser: User
   users: User[]
 }
 
-export function CreateGroup({ users }: props) {
+export function CreateGroup({ currentUser, users }: props) {
   const [photoCards, setPhotoCards] = useState<PhotoCardForm>()
   const [newGroupName, setNewGroupName] = useState('')
   const [selectedUsers, setSelectedUsers] = useState<number[]>([])
@@ -40,21 +42,26 @@ export function CreateGroup({ users }: props) {
   const onCreateGroup = async (
     groupCover: File,
     name: string,
-    memberIds: number[]
+    memberIds: number[],
+    currentUser: User
   ) => {
     if (!groupCover || !name || memberIds.length === 0) {
       alert('Please fill in all fields')
       return
     }
 
+    const members = [...memberIds, currentUser.id]
+
     const payload = {
       name: name,
-      memberIds: memberIds,
+      memberIds: members as number[],
       groupPicture: groupCover,
     }
     try {
       await createGroup(payload)
+      toast.success('Group created successfully')
     } catch (err) {
+      toast.error('Failed to create group')
       console.error('Failed to create group:', err)
     }
   }
@@ -76,9 +83,10 @@ export function CreateGroup({ users }: props) {
 
   const handleCreateGroup = () => {
     if (newGroupName.trim() && selectedUsers.length > 0 && photoCards) {
-      onCreateGroup(photoCards.image, newGroupName, selectedUsers)
+      onCreateGroup(photoCards.image, newGroupName, selectedUsers, currentUser)
       setNewGroupName('')
       setSelectedUsers([])
+      setPhotoCards(undefined)
     }
   }
 

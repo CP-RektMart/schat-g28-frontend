@@ -11,19 +11,16 @@ export interface CreateGroupActionProps {
 }
 
 export async function createGroup(payload: CreateGroupActionProps) {
-  console.log('starting upload...')
+  console.log(payload)
+
   const { url } = await uploadObject({
     file: payload.groupPicture,
   })
-
-  console.log('finishing uploaded...')
 
   if (!url) {
     console.error('Failed to upload profile picture')
     return
   }
-
-  console.log('starting create group...')
 
   await client.POST('/api/v1/groups', {
     body: {
@@ -32,8 +29,6 @@ export async function createGroup(payload: CreateGroupActionProps) {
       profilePictureUrl: url,
     },
   })
-
-  console.log('finishing create...')
 
   revalidatePath('/chat')
 

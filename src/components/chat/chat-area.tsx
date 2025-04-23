@@ -203,6 +203,8 @@ export default function ChatArea({
                 (m) => m.id === message.senderId
               )
 
+              console.log(group?.members)
+
               return (
                 <div
                   key={`${user?.name}-${message.sendedAt}`}

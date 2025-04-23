@@ -105,7 +105,7 @@ export default function ChatSidebar({
             />
 
             {/* Start a new direct conversation or group chat */}
-            <CreateGroup users={users} />
+            <CreateGroup currentUser={myProfile} users={users} />
 
             {/* join group */}
             <JoinGroup />

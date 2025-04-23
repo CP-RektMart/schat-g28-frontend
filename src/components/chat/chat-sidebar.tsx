@@ -98,7 +98,7 @@ export default function ChatSidebar({
           />
 
           {/* Search and actions */}
-          <div className='border-b p-4'>
+          <div className='flex flex-col gap-2 border-b p-4'>
             <SearchChat
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}

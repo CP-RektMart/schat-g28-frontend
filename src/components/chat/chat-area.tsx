@@ -11,14 +11,16 @@ import { GroupDetail } from '@/types/group'
 import type { ChatMode, DMMessage, GroupMessage } from '@/types/message'
 //TODO: change type config
 import type { User, UserDetail } from '@/types/user'
+import { format } from 'date-fns'
 import { Menu, Send } from 'lucide-react'
 
 import { GroupSettings } from '@/components/group/group-settings'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
+
+import ListMember from '../group/list-member'
 
 interface ChatAreaProps {
   setIsMobileMenuOpen: (open: boolean) => void
@@ -28,6 +30,10 @@ interface ChatAreaProps {
   accessToken: string
   currentUser: User
   chatColor: string
+}
+
+function formatDateToString(date: string): string {
+  return format(date, 'dd/MM/yyyy HH:mm')
 }
 
 export default function ChatArea({
@@ -177,10 +183,23 @@ export default function ChatArea({
                 {chatMode == 'GROUP' ? group?.name : user?.name}
               </h3>
               {chatMode == 'GROUP' && (
-                <Badge variant='outline' className='ml-2 bg-gray-100 text-xs'>
-                  Group • {group?.members?.length} members
-                </Badge>
+                // <Badge variant='outline' className='ml-2 bg-gray-100 text-xs'>
+                //   Group • {group?.members?.length} members
+                // </Badge>
+                <ListMember members={group?.members || []} />
               )}
+              {/* {
+                if (chatMode == 'GROUP') {
+                  return (
+                    <Badge
+                      variant='outline'
+                      className='ml-2 bg-gray-100 text-xs'
+                    >
+                      Group • {group?.members?.length} members
+                    </Badge>
+                  )
+                }
+              } */}
             </div>
           </div>
         </div>
@@ -231,7 +250,8 @@ export default function ChatArea({
                       'max-w-[70%]',
                       isCurrentUser
                         ? 'rounded-l-lg rounded-br-lg bg-gray-900 text-white'
-                        : 'rounded-r-lg rounded-bl-lg bg-gray-200 text-gray-900'
+                        : 'rounded-r-lg rounded-bl-lg bg-gray-200 text-gray-900',
+                      isCurrentUser && chatColor
                     )}
                   >
                     <div className='p-3'>
@@ -249,7 +269,10 @@ export default function ChatArea({
                           isCurrentUser ? 'text-gray-300' : 'text-gray-500'
                         }`}
                       >
-                        <span>{message.sendedAt}</span>
+                        {/* <span>{message.sendedAt}</span> */}
+                        <span>
+                          {formatDateToString(message.sendedAt || '')}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -309,7 +332,10 @@ export default function ChatArea({
                           isCurrentUser ? 'text-gray-300' : 'text-gray-500'
                         }`}
                       >
-                        <span>{message.sendedAt}</span>
+                        {/* <span>{message.sendedAt}</span> */}
+                        <span>
+                          {formatDateToString(message.sendedAt || '')}
+                        </span>
                       </div>
                     </div>
                   </div>

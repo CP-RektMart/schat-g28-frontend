@@ -58,6 +58,7 @@ export function CreateGroup({ currentUser, users }: props) {
       groupPicture: groupCover,
     }
     try {
+      toast.loading('Creating group...')
       await createGroup(payload)
       toast.success('Group created successfully')
     } catch (err) {

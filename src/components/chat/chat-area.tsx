@@ -128,6 +128,18 @@ export default function ChatArea({
     }
   }
 
+  function formatTime(sendedAt: string) {
+    const date = new Date(sendedAt)
+    return date.toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    })
+  }
+
   if (!group && !user) {
     return (
       <div className='flex flex-1 flex-col items-center justify-center bg-gray-50 p-4'>
@@ -249,7 +261,7 @@ export default function ChatArea({
                           isCurrentUser ? 'text-gray-300' : 'text-gray-500'
                         }`}
                       >
-                        <span>{message.sendedAt}</span>
+                        <span>{formatTime(message.sendedAt || '')}</span>
                       </div>
                     </div>
                   </div>
@@ -309,7 +321,7 @@ export default function ChatArea({
                           isCurrentUser ? 'text-gray-300' : 'text-gray-500'
                         }`}
                       >
-                        <span>{message.sendedAt}</span>
+                        <span>{formatTime(message.sendedAt || '')}</span>
                       </div>
                     </div>
                   </div>
